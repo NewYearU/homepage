@@ -8,11 +8,6 @@
 body{font-family:Arial;background:#f6f8fb;margin:0;padding:20px}
 .card{background:white;padding:20px;border-radius:12px;margin-bottom:20px}
 
-.state-high{background:#dcfce7}
-.state-low{background:#fee2e2}
-.state-macro{background:#fed7aa}
-.state-micro{background:#fef9c3}
-
 input{padding:6px}
 button{padding:8px 12px;background:#1f4e79;color:white;border:none;border-radius:6px}
 .plot{border:1px solid #ccc;margin-top:10px}
@@ -47,24 +42,27 @@ button{padding:8px 12px;background:#1f4e79;color:white;border:none;border-radius
 const VTI=16.9;
 const PI=1.2;
 
+/* 状态 */
 function state(v,p){
 if(v>=VTI && p>=PI) return "Concordant high-flow";
-if(v<VTI && p<PI) return "Concordant low-flow";
 if(v<VTI && p>=PI) return "Macro-predominant mismatch";
-return "Micro-predominant mismatch";
+if(v>=VTI && p<PI) return "Micro-predominant mismatch";
+return "Concordant low-flow";
 }
 
+/* 分组 */
 function group(s){
 if(s==="Concordant high-flow") return "high";
 if(s==="Concordant low-flow") return "low";
 return "mismatch";
 }
 
+/* 🔥 你指定的颜色：绿、黄、橙、红 */
 function color(s){
-if(s==="Concordant high-flow") return "#16a34a";
-if(s==="Concordant low-flow") return "#dc2626";
-if(s==="Macro-predominant mismatch") return "#ea580c";
-return "#ca8a04";
+if(s==="Concordant high-flow") return "#16a34a";   // 绿
+if(s==="Macro-predominant mismatch") return "#fde047"; // 黄
+if(s==="Micro-predominant mismatch") return "#f97316"; // 橙
+return "#dc2626"; // 红
 }
 
 function analyze(){
@@ -77,8 +75,10 @@ if([v1,p1,v2,p2,v3,p3].some(isNaN)) return alert("Fill all values");
 
 let s1=state(v1,p1),s2=state(v2,p2),s3=state(v3,p3);
 
+/* 顺序说明 */
 states.innerHTML=
-`States (ordered): High → Macro mismatch → Micro mismatch → Low<br><br>
+`States (ordered):<br>
+Concordant high-flow → Macro-predominant mismatch → Micro-predominant mismatch → Concordant low-flow<br><br>
 Day1: ${s1}<br>
 Day2: ${s2}<br>
 Day3: ${s3}`;
@@ -117,11 +117,11 @@ svg.innerHTML="";
 function x(v){return 50+(v-10)*15;}
 function y(p){return 350-(p*100);}
 
-/* 四象限 */
-svg.innerHTML+=`<rect x="50" y="0" width="200" height="200" fill="#fed7aa"/>`;
+/* 四象限背景 */
+svg.innerHTML+=`<rect x="50" y="0" width="200" height="200" fill="#fde047"/>`;
 svg.innerHTML+=`<rect x="250" y="0" width="300" height="200" fill="#dcfce7"/>`;
 svg.innerHTML+=`<rect x="50" y="200" width="200" height="200" fill="#fee2e2"/>`;
-svg.innerHTML+=`<rect x="250" y="200" width="300" height="200" fill="#fef9c3"/>`;
+svg.innerHTML+=`<rect x="250" y="200" width="300" height="200" fill="#f97316"/>`;
 
 /* cutoff线 */
 svg.innerHTML+=`<line x1="250" y1="0" x2="250" y2="400" stroke="black"/>`;
