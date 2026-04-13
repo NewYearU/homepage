@@ -1,168 +1,760 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Macro–Micro Circulatory Prognostic Tool (Demo)</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro–Micro Circulatory Prognostic Tool (Demo)</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe2ea;
+      --accent: #1f4e79;
+      --accent-soft: #eaf2f8;
+      --danger: #8b1e1e;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
 
-<style>
-body{margin:0;font-family:Arial;background:#f6f8fb}
-.container{max-width:1100px;margin:40px auto;padding:20px}
-.card{background:#fff;border-radius:12px;padding:20px;margin-bottom:20px}
+    * {
+      box-sizing: border-box;
+    }
 
-input{padding:8px}
-button{padding:10px 14px;background:#1f4e79;color:white;border:none;border-radius:8px}
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
 
-.plot{border:1px solid #ccc;margin-top:10px}
-</style>
+    .container {
+      max-width: 1180px;
+      margin: 40px auto;
+      padding: 0 20px 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 32px 28px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 10px;
+      font-size: 1rem;
+      color: var(--accent);
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .small {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .state-box {
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+    }
+
+    .state-high {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .state-macro {
+      background: #fef9c3;
+      border-color: #fde047;
+      color: #854d0e;
+    }
+
+    .state-micro {
+      background: #fed7aa;
+      border-color: #fdba74;
+      color: #9a3412;
+    }
+
+    .state-low {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 420px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cdd6e1;
+      border-radius: 10px;
+      font-size: 0.98rem;
+      background: #fff;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #7aa7cf;
+      box-shadow: 0 0 0 4px rgba(31, 78, 121, 0.08);
+    }
+
+    .btn-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #e9eef4;
+      color: #334155;
+    }
+
+    .result-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: #fcfdff;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 1.02rem;
+      font-weight: 600;
+    }
+
+    .trajectory {
+      font-size: 1.08rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .note {
+      background: #fff8e8;
+      border: 1px solid #f1dfaa;
+      color: #6d5a14;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.94rem;
+      margin-top: 14px;
+    }
+
+    .disclaimer {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fff2f2;
+      border: 1px solid #f2c9c9;
+      color: var(--danger);
+      font-size: 0.94rem;
+    }
+
+    .footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    .plot-wrap {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .dot.high { background: #16a34a; }
+    .dot.macro { background: #fde047; }
+    .dot.micro { background: #f97316; }
+    .dot.low { background: #dc2626; }
+
+    .quad-note {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 28px 22px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.65rem;
+      }
+    }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <section class="hero">
+      <h1>Macro–Micro Circulatory Prognostic Tool (Demo)</h1>
+      <p class="subtitle">
+        Based on a time-dependent integration of VTI and PI during the first 3 ICU days
+      </p>
+    </section>
 
-<div class="container">
+    <div class="grid">
+      <section class="card">
+        <h2>Background</h2>
+        <p>
+          Macrocirculatory flow and microcirculatory perfusion are related but not interchangeable.
+          In this framework, left ventricular outflow tract velocity–time integral (VTI) is used as a
+          surrogate of global flow, whereas perfusion index (PI) reflects peripheral perfusion.
+          Their contemporaneous combination defines four macro–micro circulatory states.
+        </p>
 
-<h2>Macro–Micro Prognostic Tool</h2>
+        <h2>State Definitions</h2>
+        <div class="state-box state-high"><strong>Concordant high-flow:</strong> VTI ≥ 16.9 and PI ≥ 1.2</div>
+        <div class="state-box state-macro"><strong>Macro-predominant mismatch:</strong> VTI &lt; 16.9 and PI ≥ 1.2</div>
+        <div class="state-box state-micro"><strong>Micro-predominant mismatch:</strong> VTI ≥ 16.9 and PI &lt; 1.2</div>
+        <div class="state-box state-low"><strong>Concordant low-flow:</strong> VTI &lt; 16.9 and PI &lt; 1.2</div>
 
-<div class="card">
-<table>
-<tr><td>Day1</td><td><input id="vti1"></td><td><input id="pi1"></td></tr>
-<tr><td>Day2</td><td><input id="vti2"></td><td><input id="pi2"></td></tr>
-<tr><td>Day3</td><td><input id="vti3"></td><td><input id="pi3"></td></tr>
-</table>
-<br>
-<button onclick="analyze()">Analyze</button>
-</div>
+        <h2>Input</h2>
+        <p class="small">Enter VTI and PI values for the first 3 ICU days.</p>
 
-<div class="card">
-<p id="states"></p>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>VTI (cm)</th>
+                <th>PI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Day 1</td>
+                <td><input type="number" id="vti1" step="0.1" placeholder="e.g. 15.8" /></td>
+                <td><input type="number" id="pi1" step="0.1" placeholder="e.g. 1.4" /></td>
+              </tr>
+              <tr>
+                <td>Day 2</td>
+                <td><input type="number" id="vti2" step="0.1" placeholder="e.g. 17.2" /></td>
+                <td><input type="number" id="pi2" step="0.1" placeholder="e.g. 1.1" /></td>
+              </tr>
+              <tr>
+                <td>Day 3</td>
+                <td><input type="number" id="vti3" step="0.1" placeholder="e.g. 18.0" /></td>
+                <td><input type="number" id="pi3" step="0.1" placeholder="e.g. 1.5" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-<p><b>Trajectory:</b> <span id="traj"></span></p>
-<p><b>Predicted risk:</b> <span id="prediction"></span></p>
-<p id="interp"></p>
+        <div class="btn-row">
+          <button class="primary" onclick="analyzePattern()">Analyze Pattern</button>
+          <button class="secondary" onclick="fillExample()">Load Example</button>
+          <button class="secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </section>
 
-<svg id="plot" width="600" height="400" class="plot"></svg>
-</div>
+      <section class="card">
+        <h2>Results</h2>
 
-</div>
+        <div class="result-item">
+          <div class="label">Day-by-day state classification</div>
+          <div class="value" id="dailyStates">No analysis yet.</div>
+        </div>
 
-<script>
+        <div class="result-item">
+          <div class="label">Trajectory pattern</div>
+          <div class="trajectory" id="trajectory">Awaiting input</div>
+        </div>
 
-const VTI=16.9;
-const PI=1.2;
+        <div class="result-item">
+          <div class="label">Predicted risk</div>
+          <div class="value" id="prediction">Awaiting input</div>
+        </div>
 
-/* 状态 */
-function getState(v,p){
-if(v>=VTI && p>=PI) return "Concordant high-flow";
-if(v<VTI && p>=PI) return "Macro-predominant mismatch";
-if(v>=VTI && p<PI) return "Micro-predominant mismatch";
-return "Concordant low-flow";
-}
+        <div class="result-item">
+          <div class="label">Interpretation</div>
+          <div class="value" id="interpretation" style="font-weight: 500;">
+            Enter data and click “Analyze Pattern”.
+          </div>
+        </div>
 
-/* 分组 */
-function group(s){
-if(s==="Concordant high-flow") return "high";
-if(s==="Concordant low-flow") return "low";
-return "mismatch";
-}
+        <h3>VTI–PI Quadrant Plot</h3>
+        <div class="plot-wrap">
+          <svg id="quadrantPlot" viewBox="0 0 760 520" aria-label="VTI-PI quadrant plot"></svg>
+        </div>
 
-/* 颜色（绿→黄→橙→红） */
-function getColor(s){
-if(s==="Concordant high-flow") return "#16a34a";
-if(s==="Macro-predominant mismatch") return "#fde047";
-if(s==="Micro-predominant mismatch") return "#f97316";
-return "#dc2626";
-}
+        <div class="legend">
+          <span class="legend-item"><span class="dot high"></span>Concordant high-flow</span>
+          <span class="legend-item"><span class="dot macro"></span>Macro-predominant mismatch</span>
+          <span class="legend-item"><span class="dot micro"></span>Micro-predominant mismatch</span>
+          <span class="legend-item"><span class="dot low"></span>Concordant low-flow</span>
+        </div>
 
-/* trajectory + prediction */
-function analyzeTrajectory(states){
-let g=states.map(group);
-let [g1,g2,g3]=g;
+        <div class="quad-note">
+          Ordered spectrum: Concordant high-flow → Macro-predominant mismatch → Micro-predominant mismatch → Concordant low-flow.
+          Vertical cutoff: VTI = 16.9 cm. Horizontal cutoff: PI = 1.2.
+        </div>
 
-if(g1==="high"&&g2==="high"&&g3==="high"){
-return ["Stable high-flow","Lower predicted risk"];
-}
+        <div class="note" id="detailNote">
+          This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.
+        </div>
 
-if(g1==="low"&&g2==="low"&&g3==="low"){
-return ["Persistent low-flow","Higher predicted risk"];
-}
+        <div class="disclaimer">
+          This tool is for research and educational purposes only. It is not intended for clinical decision-making.
+        </div>
+      </section>
+    </div>
 
-if((g1!=="high")&&g3==="high"){
-return ["Improving","Lower-to-intermediate risk"];
-}
+    <div class="footer">
+      Demo page for research presentation and framework visualization
+    </div>
+  </div>
 
-if(g1==="high"&&(g3!=="high")){
-return ["Worsening","Intermediate-to-higher risk"];
-}
+  <script>
+    const VTI_CUTOFF = 16.9;
+    const PI_CUTOFF = 1.2;
 
-return ["Fluctuating","Intermediate risk"];
-}
+    function getState(vti, pi) {
+      if (vti >= VTI_CUTOFF && pi >= PI_CUTOFF) {
+        return "Concordant high-flow";
+      }
+      if (vti < VTI_CUTOFF && pi >= PI_CUTOFF) {
+        return "Macro-predominant mismatch";
+      }
+      if (vti >= VTI_CUTOFF && pi < PI_CUTOFF) {
+        return "Micro-predominant mismatch";
+      }
+      return "Concordant low-flow";
+    }
 
-function analyze(){
+    function getColor(state) {
+      if (state === "Concordant high-flow") return "#16a34a";
+      if (state === "Macro-predominant mismatch") return "#fde047";
+      if (state === "Micro-predominant mismatch") return "#f97316";
+      return "#dc2626";
+    }
 
-let v1=parseFloat(vti1.value),p1=parseFloat(pi1.value);
-let v2=parseFloat(vti2.value),p2=parseFloat(pi2.value);
-let v3=parseFloat(vti3.value),p3=parseFloat(pi3.value);
+    function stateGroup(state) {
+      if (state === "Concordant high-flow") return "high";
+      if (state === "Concordant low-flow") return "low";
+      return "mismatch";
+    }
 
-if([v1,p1,v2,p2,v3,p3].some(isNaN)){
-alert("Fill all values");return;
-}
+    function analyzeTrajectory(states) {
+      const groups = states.map(stateGroup);
+      const [g1, g2, g3] = groups;
 
-let s1=getState(v1,p1);
-let s2=getState(v2,p2);
-let s3=getState(v3,p3);
+      if (g1 === "high" && g2 === "high" && g3 === "high") {
+        return {
+          pattern: "Stable favorable pattern",
+          prediction: "Lower predicted risk",
+          interpretation:
+            "All three time points remained within the concordant high-flow state, suggesting a favorable macro–micro circulatory profile."
+        };
+      }
 
-states.innerHTML=
-`Ordered states:<br>
-Concordant high-flow → Macro mismatch → Micro mismatch → Concordant low-flow<br><br>
-Day1: ${s1}<br>
-Day2: ${s2}<br>
-Day3: ${s3}`;
+      if (g1 === "low" && g2 === "low" && g3 === "low") {
+        return {
+          pattern: "Persistent low-flow pattern",
+          prediction: "Higher predicted risk",
+          interpretation:
+            "All three time points remained within the concordant low-flow state, indicating severe hemodynamic impairment."
+        };
+      }
 
-let result=analyzeTrajectory([s1,s2,s3]);
+      if ((g1 === "low" || g1 === "mismatch") && g3 === "high") {
+        return {
+          pattern: "Improving pattern",
+          prediction: "Lower-to-intermediate predicted risk",
+          interpretation:
+            "The trajectory evolved toward concordant high-flow, suggesting recovery of macro–micro coherence."
+        };
+      }
 
-traj.innerText=result[0];
-prediction.innerText=result[1];
-interp.innerText="Framework-based prediction (demo only)";
+      if (g1 === "high" && (g3 === "low" || g3 === "mismatch")) {
+        return {
+          pattern: "Worsening pattern",
+          prediction: "Intermediate-to-higher predicted risk",
+          interpretation:
+            "The trajectory deteriorated away from concordant high-flow, suggesting worsening hemodynamic status."
+        };
+      }
 
-draw([[v1,p1,s1],[v2,p2,s2],[v3,p3,s3]]);
+      if (g1 === "mismatch" && g2 === "mismatch" && g3 === "mismatch") {
+        return {
+          pattern: "Persistent mismatch pattern",
+          prediction: "Intermediate predicted risk",
+          interpretation:
+            "Persistent macro–micro dissociation indicates sustained loss of hemodynamic coherence."
+        };
+      }
 
-}
+      return {
+        pattern: "Fluctuating pattern",
+        prediction: "Intermediate predicted risk",
+        interpretation:
+          "Dynamic transitions across states suggest unstable macro–micro circulatory regulation."
+      };
+    }
 
-function draw(points){
+    function analyzePattern() {
+      const vti1 = parseFloat(document.getElementById("vti1").value);
+      const pi1 = parseFloat(document.getElementById("pi1").value);
+      const vti2 = parseFloat(document.getElementById("vti2").value);
+      const pi2 = parseFloat(document.getElementById("pi2").value);
+      const vti3 = parseFloat(document.getElementById("vti3").value);
+      const pi3 = parseFloat(document.getElementById("pi3").value);
 
-let svg=document.getElementById("plot");
-svg.innerHTML="";
+      const values = [vti1, pi1, vti2, pi2, vti3, pi3];
+      const hasInvalid = values.some(v => Number.isNaN(v));
 
-/* 坐标 */
-function x(v){return 50+(v-10)*15;}
-function y(p){return 350-(p*100);}
+      if (hasInvalid) {
+        document.getElementById("dailyStates").textContent = "Please enter all six values.";
+        document.getElementById("trajectory").textContent = "Incomplete input";
+        document.getElementById("prediction").textContent = "Incomplete input";
+        document.getElementById("interpretation").textContent =
+          "All Day 1–3 VTI and PI fields are required.";
+        document.getElementById("detailNote").textContent =
+          "Tip: use numeric values only, for example VTI 15.8 and PI 1.4.";
+        drawQuadrantPlot([]);
+        return;
+      }
 
-/* 四象限 */
-svg.innerHTML+=`<rect x="50" y="0" width="200" height="200" fill="#fef9c3"/>`;   // Macro
-svg.innerHTML+=`<rect x="250" y="0" width="300" height="200" fill="#dcfce7"/>`; // High
-svg.innerHTML+=`<rect x="50" y="200" width="200" height="200" fill="#fee2e2"/>`; // Low
-svg.innerHTML+=`<rect x="250" y="200" width="300" height="200" fill="#fed7aa"/>`; // Micro
+      const points = [
+        { day: "Day 1", vti: vti1, pi: pi1, state: getState(vti1, pi1) },
+        { day: "Day 2", vti: vti2, pi: pi2, state: getState(vti2, pi2) },
+        { day: "Day 3", vti: vti3, pi: pi3, state: getState(vti3, pi3) }
+      ];
 
-/* cutoff */
-svg.innerHTML+=`<line x1="250" y1="0" x2="250" y2="400" stroke="black"/>`;
-svg.innerHTML+=`<line x1="50" y1="200" x2="600" y2="200" stroke="black"/>`;
+      const result = analyzeTrajectory(points.map(p => p.state));
 
-/* trajectory */
-for(let i=0;i<points.length;i++){
-let [v,p,s]=points[i];
-let cx=x(v),cy=y(p);
+      document.getElementById("dailyStates").innerHTML =
+        `States (ordered): Concordant high-flow → Macro-predominant mismatch → Micro-predominant mismatch → Concordant low-flow<br><br>` +
+        `<strong>Day 1:</strong> ${points[0].state}<br>` +
+        `<strong>Day 2:</strong> ${points[1].state}<br>` +
+        `<strong>Day 3:</strong> ${points[2].state}`;
 
-svg.innerHTML+=`<circle cx="${cx}" cy="${cy}" r="7" fill="${getColor(s)}"/>`;
+      document.getElementById("trajectory").textContent = result.pattern;
+      document.getElementById("prediction").textContent = result.prediction;
+      document.getElementById("interpretation").textContent = result.interpretation;
 
-if(i>0){
-let [pv,pp]=points[i-1];
-svg.innerHTML+=`<line x1="${x(pv)}" y1="${y(pp)}" x2="${cx}" y2="${cy}" stroke="#555" stroke-width="2"/>`;
-}
-}
+      document.getElementById("detailNote").textContent =
+        `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
+        `The quadrant plot visualizes day-by-day movement across the ordered macro–micro circulatory spectrum. Predicted risk categories are framework-based and intended for research demonstration only.`;
 
-}
+      drawQuadrantPlot(points);
+    }
 
-</script>
+    function fillExample() {
+      document.getElementById("vti1").value = 15.2;
+      document.getElementById("pi1").value = 1.4;
+      document.getElementById("vti2").value = 16.1;
+      document.getElementById("pi2").value = 1.1;
+      document.getElementById("vti3").value = 17.4;
+      document.getElementById("pi3").value = 1.3;
+      analyzePattern();
+    }
 
+    function resetForm() {
+      ["vti1", "pi1", "vti2", "pi2", "vti3", "pi3"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("dailyStates").textContent = "No analysis yet.";
+      document.getElementById("trajectory").textContent = "Awaiting input";
+      document.getElementById("prediction").textContent = "Awaiting input";
+      document.getElementById("interpretation").textContent =
+        "Enter data and click “Analyze Pattern”.";
+      document.getElementById("detailNote").textContent =
+        "This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.";
+
+      drawQuadrantPlot([]);
+    }
+
+    function drawQuadrantPlot(points) {
+      const svg = document.getElementById("quadrantPlot");
+      const width = 760;
+      const height = 520;
+
+      const margin = { top: 36, right: 28, bottom: 58, left: 72 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+
+      const xMin = 8;
+      const xMax = 28;
+      const yMin = 0;
+      const yMax = 2.6;
+
+      const xScale = v => margin.left + ((v - xMin) / (xMax - xMin)) * plotW;
+      const yScale = v => height - margin.bottom - ((v - yMin) / (yMax - yMin)) * plotH;
+
+      const cutX = xScale(VTI_CUTOFF);
+      const cutY = yScale(PI_CUTOFF);
+
+      let content = `
+        <defs>
+          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+          </marker>
+        </defs>
+
+        <!-- Quadrant backgrounds -->
+        <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fef9c3"></rect>
+        <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
+        <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
+        <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fed7aa"></rect>
+
+        <!-- Grid -->
+        ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
+
+        <!-- Axes -->
+        <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
+        <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
+
+        <!-- Cutoff lines -->
+        <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
+        <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
+
+        <!-- Quadrant labels -->
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
+          Concordant high-flow
+        </text>
+        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#ca8a04" font-weight="700">
+          Macro-predominant mismatch
+        </text>
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#ea580c" font-weight="700">
+          Micro-predominant mismatch
+        </text>
+        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#dc2626" font-weight="700">
+          Concordant low-flow
+        </text>
+
+        <!-- Axis labels -->
+        <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
+          VTI (cm)
+        </text>
+        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600"
+              transform="rotate(-90, 18, ${margin.top + plotH / 2})">
+          PI
+        </text>
+
+        <!-- Cutoff labels -->
+        <text x="${cutX + 8}" y="${height - margin.bottom - 10}" font-size="13" fill="#1f4e79">VTI = ${VTI_CUTOFF}</text>
+        <text x="${width - margin.right - 74}" y="${cutY - 8}" font-size="13" fill="#1f4e79">PI = ${PI_CUTOFF}</text>
+
+        <!-- Ticks -->
+        ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
+      `;
+
+      if (points.length > 0) {
+        for (let i = 0; i < points.length - 1; i++) {
+          const p1 = points[i];
+          const p2 = points[i + 1];
+          content += `
+            <line
+              x1="${xScale(p1.vti)}"
+              y1="${yScale(p1.pi)}"
+              x2="${xScale(p2.vti)}"
+              y2="${yScale(p2.pi)}"
+              stroke="#64748b"
+              stroke-width="2.5"
+              marker-end="url(#arrowHead)"
+            ></line>
+          `;
+        }
+
+        points.forEach((p) => {
+          const cx = xScale(p.vti);
+          const cy = yScale(p.pi);
+          const color = getColor(p.state);
+          content += `
+            <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
+            <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
+              ${p.day}
+            </text>
+            <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
+              (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
+            </text>
+          `;
+        });
+      } else {
+        content += `
+          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
+            Enter Day 1–3 VTI and PI values to display the trajectory
+          </text>
+        `;
+      }
+
+      svg.innerHTML = content;
+    }
+
+    function drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
+      let lines = "";
+
+      for (let x = xMin; x <= xMax; x += 2) {
+        const px = xScale(x);
+        lines += `<line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>`;
+      }
+
+      for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
+        const py = yScale(y);
+        lines += `<line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>`;
+      }
+
+      return lines;
+    }
+
+    function drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
+      let ticks = "";
+
+      for (let x = xMin; x <= xMax; x += 2) {
+        const px = xScale(x);
+        ticks += `
+          <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
+          <text x="${px}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="12" fill="#475569">${x}</text>
+        `;
+      }
+
+      for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
+        const py = yScale(y);
+        ticks += `
+          <line x1="${margin.left - 6}" y1="${py}" x2="${margin.left}" y2="${py}" stroke="#334155" stroke-width="1"></line>
+          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="12" fill="#475569">${y.toFixed(1)}</text>
+        `;
+      }
+
+      return ticks;
+    }
+
+    drawQuadrantPlot([]);
+  </script>
 </body>
 </html>
