@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Macro–Micro Circulatory Prognostic Tool (Demo)</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --line: #dbe2ea;
+      --accent: #1f4e79;
+      --accent-soft: #eaf2f8;
+      --danger: #8b1e1e;
+      --good: #1f6b4f;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 40px auto;
+      padding: 0 20px 48px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #ffffff 0%, #f7fbff 100%);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      padding: 32px 28px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 2rem;
+      line-height: 1.2;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    h2 {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    p {
+      margin-top: 0;
+    }
+
+    .small {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .state-box {
+      background: var(--accent-soft);
+      border: 1px solid #d7e7f3;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      font-size: 0.95rem;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 420px;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 12px 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    th {
+      color: var(--accent);
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #cdd6e1;
+      border-radius: 10px;
+      font-size: 0.98rem;
+      background: #fff;
+    }
+
+    input[type="number"]:focus {
+      outline: none;
+      border-color: #7aa7cf;
+      box-shadow: 0 0 0 4px rgba(31, 78, 121, 0.08);
+    }
+
+    .btn-row {
+      margin-top: 18px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-size: 0.98rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      opacity: 0.96;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #e9eef4;
+      color: #334155;
+    }
+
+    .result-item {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 12px;
+      background: #fcfdff;
+    }
+
+    .label {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .value {
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+
+    .trajectory {
+      font-size: 1.08rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .note {
+      background: #fff8e8;
+      border: 1px solid #f1dfaa;
+      color: #6d5a14;
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 0.94rem;
+      margin-top: 14px;
+    }
+
+    .disclaimer {
+      margin-top: 18px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      background: #fff2f2;
+      border: 1px solid #f2c9c9;
+      color: var(--danger);
+      font-size: 0.94rem;
+    }
+
+    .footer {
+      margin-top: 26px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    @media (max-width: 860px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        padding: 28px 22px;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>Macro–Micro Circulatory Prognostic Tool (Demo)</h1>
+      <p class="subtitle">
+        Based on a time-dependent integration of VTI and PI during the first 3 ICU days
+      </p>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Background</h2>
+        <p>
+          Macrocirculatory flow and microcirculatory perfusion are related but not interchangeable.
+          In this framework, left ventricular outflow tract velocity–time integral (VTI) is used as a
+          surrogate of global flow, whereas perfusion index (PI) reflects peripheral perfusion.
+          Their contemporaneous combination defines four macro–micro circulatory states.
+        </p>
+
+        <h2>State Definitions</h2>
+        <div class="state-box"><strong>Concordant high-flow:</strong> VTI ≥ 16.9 and PI ≥ 1.2</div>
+        <div class="state-box"><strong>Concordant low-flow:</strong> VTI &lt; 16.9 and PI &lt; 1.2</div>
+        <div class="state-box"><strong>Macro-predominant mismatch:</strong> VTI &lt; 16.9 and PI ≥ 1.2</div>
+        <div class="state-box"><strong>Micro-predominant mismatch:</strong> VTI ≥ 16.9 and PI &lt; 1.2</div>
+
+        <h2>Input</h2>
+        <p class="small">
+          Enter VTI and PI values for the first 3 ICU days.
+        </p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Day</th>
+                <th>VTI (cm)</th>
+                <th>PI</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Day 1</td>
+                <td><input type="number" id="vti1" step="0.1" placeholder="e.g. 15.8" /></td>
+                <td><input type="number" id="pi1" step="0.1" placeholder="e.g. 1.4" /></td>
+              </tr>
+              <tr>
+                <td>Day 2</td>
+                <td><input type="number" id="vti2" step="0.1" placeholder="e.g. 17.2" /></td>
+                <td><input type="number" id="pi2" step="0.1" placeholder="e.g. 1.1" /></td>
+              </tr>
+              <tr>
+                <td>Day 3</td>
+                <td><input type="number" id="vti3" step="0.1" placeholder="e.g. 18.0" /></td>
+                <td><input type="number" id="pi3" step="0.1" placeholder="e.g. 1.5" /></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="btn-row">
+          <button class="primary" onclick="analyzePattern()">Analyze Pattern</button>
+          <button class="secondary" onclick="fillExample()">Load Example</button>
+          <button class="secondary" onclick="resetForm()">Reset</button>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>Results</h2>
+
+        <div class="result-item">
+          <div class="label">Day-by-day state classification</div>
+          <div class="value" id="dailyStates">No analysis yet.</div>
+        </div>
+
+        <div class="result-item">
+          <div class="label">Trajectory pattern</div>
+          <div class="trajectory" id="trajectory">Awaiting input</div>
+        </div>
+
+        <div class="result-item">
+          <div class="label">Interpretation</div>
+          <div class="value" id="interpretation" style="font-weight: 500;">
+            Enter data and click “Analyze Pattern”.
+          </div>
+        </div>
+
+        <div class="note" id="detailNote">
+          This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.
+        </div>
+
+        <div class="disclaimer">
+          This tool is for research and educational purposes only. It is not intended for clinical decision-making.
+        </div>
+      </section>
+    </div>
+
+    <div class="footer">
+      Demo page for research presentation and framework visualization
+    </div>
+  </div>
+
+  <script>
+    const VTI_CUTOFF = 16.9;
+    const PI_CUTOFF = 1.2;
+
+    function getState(vti, pi) {
+      if (vti >= VTI_CUTOFF && pi >= PI_CUTOFF) {
+        return "Concordant high-flow";
+      }
+      if (vti < VTI_CUTOFF && pi < PI_CUTOFF) {
+        return "Concordant low-flow";
+      }
+      if (vti < VTI_CUTOFF && pi >= PI_CUTOFF) {
+        return "Macro-predominant mismatch";
+      }
+      return "Micro-predominant mismatch";
+    }
+
+    function stateGroup(state) {
+      if (state === "Concordant high-flow") return "high";
+      if (state === "Concordant low-flow") return "low";
+      return "mismatch";
+    }
+
+    function analyzeTrajectory(states) {
+      const groups = states.map(stateGroup);
+      const [g1, g2, g3] = groups;
+
+      if (g1 === "high" && g2 === "high" && g3 === "high") {
+        return {
+          pattern: "Stable favorable pattern",
+          interpretation:
+            "All three time points remained within the concordant high-flow state, suggesting a relatively favorable macro–micro circulatory profile in this demonstration framework."
+        };
+      }
+
+      if (g1 === "low" && g2 === "low" && g3 === "low") {
+        return {
+          pattern: "Persistent low-flow pattern",
+          interpretation:
+            "All three time points remained within the concordant low-flow state. In the derivation framework, persistent low-flow patterns may indicate higher-risk hemodynamic impairment."
+        };
+      }
+
+      if ((g1 === "low" || g1 === "mismatch") && g3 === "high") {
+        return {
+          pattern: "Improving pattern",
+          interpretation:
+            "The trajectory evolved from a lower-risk or discordant state toward concordant high-flow, consistent with improvement in macro–micro circulatory coherence."
+        };
+      }
+
+      if (g1 === "high" && (g3 === "low" || g3 === "mismatch")) {
+        return {
+          pattern: "Worsening pattern",
+          interpretation:
+            "The trajectory shifted away from concordant high-flow toward a discordant or low-flow state, suggesting deterioration in macro–micro circulatory status within this framework."
+        };
+      }
+
+      if (g1 === "mismatch" && g2 === "mismatch" && g3 === "mismatch") {
+        return {
+          pattern: "Persistent mismatch pattern",
+          interpretation:
+            "All three time points showed persistent macro–micro dissociation, indicating sustained loss of hemodynamic coherence in this demonstration framework."
+        };
+      }
+
+      return {
+        pattern: "Fluctuating pattern",
+        interpretation:
+          "The trajectory changed across categories over time, indicating temporal instability of macro–micro circulatory status during the first 3 ICU days."
+      };
+    }
+
+    function analyzePattern() {
+      const vti1 = parseFloat(document.getElementById("vti1").value);
+      const pi1 = parseFloat(document.getElementById("pi1").value);
+      const vti2 = parseFloat(document.getElementById("vti2").value);
+      const pi2 = parseFloat(document.getElementById("pi2").value);
+      const vti3 = parseFloat(document.getElementById("vti3").value);
+      const pi3 = parseFloat(document.getElementById("pi3").value);
+
+      const values = [vti1, pi1, vti2, pi2, vti3, pi3];
+      const hasInvalid = values.some(v => Number.isNaN(v));
+
+      if (hasInvalid) {
+        document.getElementById("dailyStates").textContent = "Please enter all six values.";
+        document.getElementById("trajectory").textContent = "Incomplete input";
+        document.getElementById("interpretation").textContent =
+          "All Day 1–3 VTI and PI fields are required.";
+        document.getElementById("detailNote").textContent =
+          "Tip: use numeric values only, for example VTI 15.8 and PI 1.4.";
+        return;
+      }
+
+      const state1 = getState(vti1, pi1);
+      const state2 = getState(vti2, pi2);
+      const state3 = getState(vti3, pi3);
+
+      const result = analyzeTrajectory([state1, state2, state3]);
+
+      document.getElementById("dailyStates").innerHTML =
+        `<strong>Day 1:</strong> ${state1}<br>` +
+        `<strong>Day 2:</strong> ${state2}<br>` +
+        `<strong>Day 3:</strong> ${state3}`;
+
+      document.getElementById("trajectory").textContent = result.pattern;
+      document.getElementById("interpretation").textContent = result.interpretation;
+
+      document.getElementById("detailNote").textContent =
+        `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
+        `This page classifies contemporaneous macro–micro circulatory states and summarizes their 3-day evolution.`;
+    }
+
+    function fillExample() {
+      document.getElementById("vti1").value = 15.2;
+      document.getElementById("pi1").value = 1.4;
+      document.getElementById("vti2").value = 16.1;
+      document.getElementById("pi2").value = 1.1;
+      document.getElementById("vti3").value = 17.4;
+      document.getElementById("pi3").value = 1.3;
+      analyzePattern();
+    }
+
+    function resetForm() {
+      ["vti1", "pi1", "vti2", "pi2", "vti3", "pi3"].forEach(id => {
+        document.getElementById(id).value = "";
+      });
+
+      document.getElementById("dailyStates").textContent = "No analysis yet.";
+      document.getElementById("trajectory").textContent = "Awaiting input";
+      document.getElementById("interpretation").textContent =
+        "Enter data and click “Analyze Pattern”.";
+      document.getElementById("detailNote").textContent =
+        "This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.";
+    }
+  </script>
+</body>
+</html>
