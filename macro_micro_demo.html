@@ -12,7 +12,6 @@
       --muted: #6b7280;
       --line: #dbe2ea;
       --accent: #1f4e79;
-      --accent-soft: #eaf2f8;
       --danger: #8b1e1e;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
       --radius: 16px;
@@ -395,11 +394,6 @@
         </div>
 
         <div class="result-item">
-          <div class="label">Predicted risk</div>
-          <div class="value" id="prediction">Awaiting input</div>
-        </div>
-
-        <div class="result-item">
           <div class="label">Interpretation</div>
           <div class="value" id="interpretation" style="font-weight: 500;">
             Enter data and click “Analyze Pattern”.
@@ -475,53 +469,47 @@
       if (g1 === "high" && g2 === "high" && g3 === "high") {
         return {
           pattern: "Stable favorable pattern",
-          prediction: "Lower predicted risk",
           interpretation:
-            "All three time points remained within the concordant high-flow state, suggesting a favorable macro–micro circulatory profile."
+            "All three time points remained within the concordant high-flow state, suggesting a relatively favorable macro–micro circulatory profile in this demonstration framework."
         };
       }
 
       if (g1 === "low" && g2 === "low" && g3 === "low") {
         return {
           pattern: "Persistent low-flow pattern",
-          prediction: "Higher predicted risk",
           interpretation:
-            "All three time points remained within the concordant low-flow state, indicating severe hemodynamic impairment."
+            "All three time points remained within the concordant low-flow state. In the derivation framework, persistent low-flow patterns may indicate higher-risk hemodynamic impairment."
         };
       }
 
       if ((g1 === "low" || g1 === "mismatch") && g3 === "high") {
         return {
           pattern: "Improving pattern",
-          prediction: "Lower-to-intermediate predicted risk",
           interpretation:
-            "The trajectory evolved toward concordant high-flow, suggesting recovery of macro–micro coherence."
+            "The trajectory evolved from a discordant or lower-flow state toward concordant high-flow, consistent with improvement in macro–micro circulatory coherence."
         };
       }
 
       if (g1 === "high" && (g3 === "low" || g3 === "mismatch")) {
         return {
           pattern: "Worsening pattern",
-          prediction: "Intermediate-to-higher predicted risk",
           interpretation:
-            "The trajectory deteriorated away from concordant high-flow, suggesting worsening hemodynamic status."
+            "The trajectory shifted away from concordant high-flow toward a discordant or low-flow state, suggesting deterioration in macro–micro circulatory status within this framework."
         };
       }
 
       if (g1 === "mismatch" && g2 === "mismatch" && g3 === "mismatch") {
         return {
           pattern: "Persistent mismatch pattern",
-          prediction: "Intermediate predicted risk",
           interpretation:
-            "Persistent macro–micro dissociation indicates sustained loss of hemodynamic coherence."
+            "All three time points showed persistent macro–micro dissociation, indicating sustained loss of hemodynamic coherence in this demonstration framework."
         };
       }
 
       return {
         pattern: "Fluctuating pattern",
-        prediction: "Intermediate predicted risk",
         interpretation:
-          "Dynamic transitions across states suggest unstable macro–micro circulatory regulation."
+          "The trajectory changed across categories over time, indicating temporal instability of macro–micro circulatory status during the first 3 ICU days."
       };
     }
 
@@ -539,7 +527,6 @@
       if (hasInvalid) {
         document.getElementById("dailyStates").textContent = "Please enter all six values.";
         document.getElementById("trajectory").textContent = "Incomplete input";
-        document.getElementById("prediction").textContent = "Incomplete input";
         document.getElementById("interpretation").textContent =
           "All Day 1–3 VTI and PI fields are required.";
         document.getElementById("detailNote").textContent =
@@ -563,12 +550,11 @@
         `<strong>Day 3:</strong> ${points[2].state}`;
 
       document.getElementById("trajectory").textContent = result.pattern;
-      document.getElementById("prediction").textContent = result.prediction;
       document.getElementById("interpretation").textContent = result.interpretation;
 
       document.getElementById("detailNote").textContent =
         `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
-        `The quadrant plot visualizes day-by-day movement across the ordered macro–micro circulatory spectrum. Predicted risk categories are framework-based and intended for research demonstration only.`;
+        `The quadrant plot visualizes day-by-day movement across the ordered macro–micro circulatory spectrum.`;
 
       drawQuadrantPlot(points);
     }
@@ -590,7 +576,6 @@
 
       document.getElementById("dailyStates").textContent = "No analysis yet.";
       document.getElementById("trajectory").textContent = "Awaiting input";
-      document.getElementById("prediction").textContent = "Awaiting input";
       document.getElementById("interpretation").textContent =
         "Enter data and click “Analyze Pattern”.";
       document.getElementById("detailNote").textContent =
