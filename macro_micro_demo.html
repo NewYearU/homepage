@@ -96,12 +96,35 @@
     }
 
     .state-box {
-      background: var(--accent-soft);
-      border: 1px solid #d7e7f3;
       border-radius: 12px;
       padding: 14px 16px;
       margin-bottom: 10px;
       font-size: 0.95rem;
+      border: 1px solid transparent;
+    }
+
+    .state-high {
+      background: #dcfce7;
+      border-color: #86efac;
+      color: #166534;
+    }
+
+    .state-low {
+      background: #fee2e2;
+      border-color: #fca5a5;
+      color: #991b1b;
+    }
+
+    .state-macro {
+      background: #fed7aa;
+      border-color: #fdba74;
+      color: #9a3412;
+    }
+
+    .state-micro {
+      background: #fef9c3;
+      border-color: #fde047;
+      color: #854d0e;
     }
 
     .table-wrap {
@@ -313,10 +336,10 @@
         </p>
 
         <h2>State Definitions</h2>
-        <div class="state-box"><strong>Concordant high-flow:</strong> VTI ≥ 16.9 and PI ≥ 1.2</div>
-        <div class="state-box"><strong>Concordant low-flow:</strong> VTI &lt; 16.9 and PI &lt; 1.2</div>
-        <div class="state-box"><strong>Macro-predominant mismatch:</strong> VTI &lt; 16.9 and PI ≥ 1.2</div>
-        <div class="state-box"><strong>Micro-predominant mismatch:</strong> VTI ≥ 16.9 and PI &lt; 1.2</div>
+        <div class="state-box state-high"><strong>Concordant high-flow:</strong> VTI ≥ 16.9 and PI ≥ 1.2</div>
+        <div class="state-box state-low"><strong>Concordant low-flow:</strong> VTI &lt; 16.9 and PI &lt; 1.2</div>
+        <div class="state-box state-macro"><strong>Macro-predominant mismatch:</strong> VTI &lt; 16.9 and PI ≥ 1.2</div>
+        <div class="state-box state-micro"><strong>Micro-predominant mismatch:</strong> VTI ≥ 16.9 and PI &lt; 1.2</div>
 
         <h2>Input</h2>
         <p class="small">Enter VTI and PI values for the first 3 ICU days.</p>
@@ -566,7 +589,6 @@
       const plotW = width - margin.left - margin.right;
       const plotH = height - margin.top - margin.bottom;
 
-      // Fixed axis domains for visual stability
       const xMin = 8;
       const xMax = 28;
       const yMin = 0;
@@ -585,18 +607,11 @@
           </marker>
         </defs>
 
-       <!-- Quadrant backgrounds -->
-<!-- 左上：Macro mismatch（橙） -->
-<rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fed7aa"></rect>
-
-<!-- 右上：High-flow（绿） -->
-<rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
-
-<!-- 左下：Low-flow（红） -->
-<rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
-
-<!-- 右下：Micro mismatch（黄） -->
-<rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fef9c3"></rect>
+        <!-- Quadrant backgrounds -->
+        <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fed7aa"></rect>
+        <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
+        <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
+        <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fef9c3"></rect>
 
         <!-- Grid -->
         ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
@@ -610,16 +625,16 @@
         <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
 
         <!-- Quadrant labels -->
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#1f4e79" font-weight="600">
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
           Concordant high-flow
         </text>
-        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#2d6a4f" font-weight="600">
+        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#ea580c" font-weight="700">
           Macro-predominant mismatch
         </text>
-        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#8a5a00" font-weight="600">
+        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#dc2626" font-weight="700">
           Concordant low-flow
         </text>
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#8b1e1e" font-weight="600">
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#ca8a04" font-weight="700">
           Micro-predominant mismatch
         </text>
 
@@ -657,7 +672,7 @@
           `;
         }
 
-        points.forEach((p, index) => {
+        points.forEach((p) => {
           const cx = xScale(p.vti);
           const cy = yScale(p.pi);
           const color = DAY_COLORS[p.key];
