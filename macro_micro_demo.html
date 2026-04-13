@@ -585,11 +585,18 @@
           </marker>
         </defs>
 
-        <!-- Quadrant backgrounds -->
-        <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#eef7f1"></rect>
-        <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#f4f8fc"></rect>
-        <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#f8f4ea"></rect>
-        <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fcf2f2"></rect>
+       <!-- Quadrant backgrounds -->
+<!-- 左上：Macro mismatch（橙） -->
+<rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fed7aa"></rect>
+
+<!-- 右上：High-flow（绿） -->
+<rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
+
+<!-- 左下：Low-flow（红） -->
+<rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
+
+<!-- 右下：Micro mismatch（黄） -->
+<rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fef9c3"></rect>
 
         <!-- Grid -->
         ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
