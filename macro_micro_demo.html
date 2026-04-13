@@ -2,62 +2,44 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Macro–Micro Circulatory Prognostic Tool (Demo)</title>
+<title>Macro–Micro Prognostic Tool</title>
 
 <style>
-:root{
---bg:#f6f8fb;--card:#fff;--text:#1f2937;--muted:#6b7280;
---line:#dbe2ea;--accent:#1f4e79;--radius:16px;
-}
-
-body{margin:0;font-family:-apple-system,Roboto;background:var(--bg);color:var(--text);}
-.container{max-width:1100px;margin:40px auto;padding:20px;}
-.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:20px;margin-bottom:20px;}
+body{font-family:Arial;background:#f6f8fb;margin:0;padding:20px}
+.card{background:white;padding:20px;border-radius:12px;margin-bottom:20px}
 
 .state-high{background:#dcfce7}
 .state-low{background:#fee2e2}
 .state-macro{background:#fed7aa}
 .state-micro{background:#fef9c3}
 
-input{width:100%;padding:8px;border-radius:8px;border:1px solid #ccc;}
-button{padding:10px 16px;border:none;border-radius:10px;background:#1f4e79;color:white;cursor:pointer;}
-
-.plot{border:1px solid #ccc;border-radius:12px;margin-top:15px}
+input{padding:6px}
+button{padding:8px 12px;background:#1f4e79;color:white;border:none;border-radius:6px}
+.plot{border:1px solid #ccc;margin-top:10px}
 </style>
 </head>
 
 <body>
 
-<div class="container">
-
-<h1>Macro–Micro Prognostic Tool (Demo)</h1>
+<h2>Macro–Micro Prognostic Tool</h2>
 
 <div class="card">
-<h3>Input</h3>
-
 <table>
 <tr><td>Day1</td><td><input id="vti1"></td><td><input id="pi1"></td></tr>
 <tr><td>Day2</td><td><input id="vti2"></td><td><input id="pi2"></td></tr>
 <tr><td>Day3</td><td><input id="vti3"></td><td><input id="pi3"></td></tr>
 </table>
-
 <br>
 <button onclick="analyze()">Analyze</button>
 </div>
 
 <div class="card">
-<h3>Results</h3>
-
 <p id="states"></p>
 <p><b>Trajectory:</b> <span id="traj"></span></p>
 <p><b>Predicted risk:</b> <span id="risk"></span></p>
 <p id="interp"></p>
 
 <svg id="plot" width="600" height="400" class="plot"></svg>
-
-</div>
-
 </div>
 
 <script>
@@ -66,16 +48,23 @@ const VTI=16.9;
 const PI=1.2;
 
 function state(v,p){
-if(v>=VTI && p>=PI) return "High";
-if(v<VTI && p<PI) return "Low";
-if(v<VTI && p>=PI) return "Macro mismatch";
-return "Micro mismatch";
+if(v>=VTI && p>=PI) return "Concordant high-flow";
+if(v<VTI && p<PI) return "Concordant low-flow";
+if(v<VTI && p>=PI) return "Macro-predominant mismatch";
+return "Micro-predominant mismatch";
 }
 
 function group(s){
-if(s==="High") return "high";
-if(s==="Low") return "low";
+if(s==="Concordant high-flow") return "high";
+if(s==="Concordant low-flow") return "low";
 return "mismatch";
+}
+
+function color(s){
+if(s==="Concordant high-flow") return "#16a34a";
+if(s==="Concordant low-flow") return "#dc2626";
+if(s==="Macro-predominant mismatch") return "#ea580c";
+return "#ca8a04";
 }
 
 function analyze(){
@@ -88,7 +77,11 @@ if([v1,p1,v2,p2,v3,p3].some(isNaN)) return alert("Fill all values");
 
 let s1=state(v1,p1),s2=state(v2,p2),s3=state(v3,p3);
 
-states.innerHTML=`Day1: ${s1}<br>Day2: ${s2}<br>Day3: ${s3}`;
+states.innerHTML=
+`States (ordered): High → Macro mismatch → Micro mismatch → Low<br><br>
+Day1: ${s1}<br>
+Day2: ${s2}<br>
+Day3: ${s3}`;
 
 let g1=group(s1),g2=group(s2),g3=group(s3);
 
@@ -107,19 +100,16 @@ else if((g1!=="high")&&g3==="high"){
 traj="Improving";risk="Low→Intermediate";
 }
 
-trajEl=traj;
-riskEl=risk;
-
 traj.innerText=traj;
 risk.innerText=risk;
 
 interp.innerText="Framework-based risk estimation (demo only)";
 
-draw(v1,p1,v2,p2,v3,p3);
+draw([[v1,p1,s1],[v2,p2,s2],[v3,p3,s3]]);
 
 }
 
-function draw(v1,p1,v2,p2,v3,p3){
+function draw(points){
 
 let svg=document.getElementById("plot");
 svg.innerHTML="";
@@ -127,22 +117,27 @@ svg.innerHTML="";
 function x(v){return 50+(v-10)*15;}
 function y(p){return 350-(p*100);}
 
+/* 四象限 */
 svg.innerHTML+=`<rect x="50" y="0" width="200" height="200" fill="#fed7aa"/>`;
 svg.innerHTML+=`<rect x="250" y="0" width="300" height="200" fill="#dcfce7"/>`;
 svg.innerHTML+=`<rect x="50" y="200" width="200" height="200" fill="#fee2e2"/>`;
 svg.innerHTML+=`<rect x="250" y="200" width="300" height="200" fill="#fef9c3"/>`;
 
+/* cutoff线 */
 svg.innerHTML+=`<line x1="250" y1="0" x2="250" y2="400" stroke="black"/>`;
 svg.innerHTML+=`<line x1="50" y1="200" x2="600" y2="200" stroke="black"/>`;
 
-let pts=[[v1,p1],[v2,p2],[v3,p3]];
+/* trajectory */
+for(let i=0;i<points.length;i++){
+let [v,p,s]=points[i];
+let cx=x(v),cy=y(p);
+let c=color(s);
 
-for(let i=0;i<pts.length;i++){
-let cx=x(pts[i][0]),cy=y(pts[i][1]);
-svg.innerHTML+=`<circle cx="${cx}" cy="${cy}" r="6" fill="black"/>`;
+svg.innerHTML+=`<circle cx="${cx}" cy="${cy}" r="7" fill="${c}"/>`;
+
 if(i>0){
-let px=x(pts[i-1][0]),py=y(pts[i-1][1]);
-svg.innerHTML+=`<line x1="${px}" y1="${py}" x2="${cx}" y2="${cy}" stroke="black"/>`;
+let [pv,pp]=points[i-1];
+svg.innerHTML+=`<line x1="${x(pv)}" y1="${y(pp)}" x2="${cx}" y2="${cy}" stroke="#555" stroke-width="2"/>`;
 }
 }
 
