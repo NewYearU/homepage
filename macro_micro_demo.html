@@ -14,7 +14,6 @@
       --accent: #1f4e79;
       --accent-soft: #eaf2f8;
       --danger: #8b1e1e;
-      --good: #1f6b4f;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
       --radius: 16px;
     }
@@ -32,7 +31,7 @@
     }
 
     .container {
-      max-width: 980px;
+      max-width: 1180px;
       margin: 40px auto;
       padding: 0 20px 48px;
     }
@@ -61,7 +60,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 1.05fr 0.95fr;
+      grid-template-columns: 0.95fr 1.05fr;
       gap: 24px;
     }
 
@@ -77,6 +76,13 @@
       margin-top: 0;
       margin-bottom: 12px;
       font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    h3 {
+      margin-top: 18px;
+      margin-bottom: 10px;
+      font-size: 1rem;
       color: var(--accent);
     }
 
@@ -113,6 +119,7 @@
       text-align: left;
       padding: 12px 10px;
       border-bottom: 1px solid var(--line);
+      vertical-align: middle;
     }
 
     th {
@@ -183,7 +190,7 @@
     }
 
     .value {
-      font-size: 1.05rem;
+      font-size: 1.02rem;
       font-weight: 600;
     }
 
@@ -220,7 +227,54 @@
       text-align: center;
     }
 
-    @media (max-width: 860px) {
+    .plot-wrap {
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #ffffff;
+      overflow: hidden;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: #fff;
+    }
+
+    .legend {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      display: inline-block;
+    }
+
+    .dot.d1 { background: #1f4e79; }
+    .dot.d2 { background: #2d6a4f; }
+    .dot.d3 { background: #8a5a00; }
+
+    .quad-note {
+      margin-top: 10px;
+      font-size: 0.92rem;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
       }
@@ -265,9 +319,7 @@
         <div class="state-box"><strong>Micro-predominant mismatch:</strong> VTI ≥ 16.9 and PI &lt; 1.2</div>
 
         <h2>Input</h2>
-        <p class="small">
-          Enter VTI and PI values for the first 3 ICU days.
-        </p>
+        <p class="small">Enter VTI and PI values for the first 3 ICU days.</p>
 
         <div class="table-wrap">
           <table>
@@ -325,6 +377,21 @@
           </div>
         </div>
 
+        <h3>VTI–PI Quadrant Plot</h3>
+        <div class="plot-wrap">
+          <svg id="quadrantPlot" viewBox="0 0 760 520" aria-label="VTI-PI quadrant plot"></svg>
+        </div>
+
+        <div class="legend">
+          <span class="legend-item"><span class="dot d1"></span>Day 1</span>
+          <span class="legend-item"><span class="dot d2"></span>Day 2</span>
+          <span class="legend-item"><span class="dot d3"></span>Day 3</span>
+        </div>
+
+        <div class="quad-note">
+          Vertical cutoff: VTI = 16.9 cm. Horizontal cutoff: PI = 1.2.
+        </div>
+
         <div class="note" id="detailNote">
           This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.
         </div>
@@ -343,6 +410,12 @@
   <script>
     const VTI_CUTOFF = 16.9;
     const PI_CUTOFF = 1.2;
+
+    const DAY_COLORS = {
+      day1: "#1f4e79",
+      day2: "#2d6a4f",
+      day3: "#8a5a00"
+    };
 
     function getState(vti, pi) {
       if (vti >= VTI_CUTOFF && pi >= PI_CUTOFF) {
@@ -387,7 +460,7 @@
         return {
           pattern: "Improving pattern",
           interpretation:
-            "The trajectory evolved from a lower-risk or discordant state toward concordant high-flow, consistent with improvement in macro–micro circulatory coherence."
+            "The trajectory evolved from a discordant or lower-flow state toward concordant high-flow, consistent with improvement in macro–micro circulatory coherence."
         };
       }
 
@@ -432,26 +505,31 @@
           "All Day 1–3 VTI and PI fields are required.";
         document.getElementById("detailNote").textContent =
           "Tip: use numeric values only, for example VTI 15.8 and PI 1.4.";
+        drawQuadrantPlot([]);
         return;
       }
 
-      const state1 = getState(vti1, pi1);
-      const state2 = getState(vti2, pi2);
-      const state3 = getState(vti3, pi3);
+      const points = [
+        { day: "Day 1", key: "day1", vti: vti1, pi: pi1, state: getState(vti1, pi1) },
+        { day: "Day 2", key: "day2", vti: vti2, pi: pi2, state: getState(vti2, pi2) },
+        { day: "Day 3", key: "day3", vti: vti3, pi: pi3, state: getState(vti3, pi3) }
+      ];
 
-      const result = analyzeTrajectory([state1, state2, state3]);
+      const result = analyzeTrajectory(points.map(p => p.state));
 
       document.getElementById("dailyStates").innerHTML =
-        `<strong>Day 1:</strong> ${state1}<br>` +
-        `<strong>Day 2:</strong> ${state2}<br>` +
-        `<strong>Day 3:</strong> ${state3}`;
+        `<strong>Day 1:</strong> ${points[0].state}<br>` +
+        `<strong>Day 2:</strong> ${points[1].state}<br>` +
+        `<strong>Day 3:</strong> ${points[2].state}`;
 
       document.getElementById("trajectory").textContent = result.pattern;
       document.getElementById("interpretation").textContent = result.interpretation;
 
       document.getElementById("detailNote").textContent =
         `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
-        `This page classifies contemporaneous macro–micro circulatory states and summarizes their 3-day evolution.`;
+        `The quadrant plot visualizes day-by-day movement across the four macro–micro circulatory states.`;
+
+      drawQuadrantPlot(points);
     }
 
     function fillExample() {
@@ -475,7 +553,167 @@
         "Enter data and click “Analyze Pattern”.";
       document.getElementById("detailNote").textContent =
         "This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.";
+
+      drawQuadrantPlot([]);
     }
+
+    function drawQuadrantPlot(points) {
+      const svg = document.getElementById("quadrantPlot");
+      const width = 760;
+      const height = 520;
+
+      const margin = { top: 36, right: 28, bottom: 58, left: 72 };
+      const plotW = width - margin.left - margin.right;
+      const plotH = height - margin.top - margin.bottom;
+
+      // Fixed axis domains for visual stability
+      const xMin = 8;
+      const xMax = 28;
+      const yMin = 0;
+      const yMax = 2.6;
+
+      const xScale = v => margin.left + ((v - xMin) / (xMax - xMin)) * plotW;
+      const yScale = v => height - margin.bottom - ((v - yMin) / (yMax - yMin)) * plotH;
+
+      const cutX = xScale(VTI_CUTOFF);
+      const cutY = yScale(PI_CUTOFF);
+
+      let content = `
+        <defs>
+          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+            <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
+          </marker>
+        </defs>
+
+        <!-- Quadrant backgrounds -->
+        <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#eef7f1"></rect>
+        <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#f4f8fc"></rect>
+        <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#f8f4ea"></rect>
+        <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fcf2f2"></rect>
+
+        <!-- Grid -->
+        ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
+
+        <!-- Axes -->
+        <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
+        <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
+
+        <!-- Cutoff lines -->
+        <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
+        <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
+
+        <!-- Quadrant labels -->
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#1f4e79" font-weight="600">
+          Concordant high-flow
+        </text>
+        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#2d6a4f" font-weight="600">
+          Macro-predominant mismatch
+        </text>
+        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#8a5a00" font-weight="600">
+          Concordant low-flow
+        </text>
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#8b1e1e" font-weight="600">
+          Micro-predominant mismatch
+        </text>
+
+        <!-- Axis labels -->
+        <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
+          VTI (cm)
+        </text>
+        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600"
+              transform="rotate(-90, 18, ${margin.top + plotH / 2})">
+          PI
+        </text>
+
+        <!-- Cutoff labels -->
+        <text x="${cutX + 8}" y="${height - margin.bottom - 10}" font-size="13" fill="#1f4e79">VTI = ${VTI_CUTOFF}</text>
+        <text x="${width - margin.right - 74}" y="${cutY - 8}" font-size="13" fill="#1f4e79">PI = ${PI_CUTOFF}</text>
+
+        <!-- Ticks -->
+        ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
+      `;
+
+      if (points.length > 0) {
+        for (let i = 0; i < points.length - 1; i++) {
+          const p1 = points[i];
+          const p2 = points[i + 1];
+          content += `
+            <line
+              x1="${xScale(p1.vti)}"
+              y1="${yScale(p1.pi)}"
+              x2="${xScale(p2.vti)}"
+              y2="${yScale(p2.pi)}"
+              stroke="#64748b"
+              stroke-width="2.5"
+              marker-end="url(#arrowHead)"
+            ></line>
+          `;
+        }
+
+        points.forEach((p, index) => {
+          const cx = xScale(p.vti);
+          const cy = yScale(p.pi);
+          const color = DAY_COLORS[p.key];
+          content += `
+            <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
+            <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
+              ${p.day}
+            </text>
+            <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
+              (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
+            </text>
+          `;
+        });
+      } else {
+        content += `
+          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
+            Enter Day 1–3 VTI and PI values to display the trajectory
+          </text>
+        `;
+      }
+
+      svg.innerHTML = content;
+    }
+
+    function drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
+      let lines = "";
+
+      for (let x = xMin; x <= xMax; x += 2) {
+        const px = xScale(x);
+        lines += `<line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>`;
+      }
+
+      for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
+        const py = yScale(y);
+        lines += `<line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>`;
+      }
+
+      return lines;
+    }
+
+    function drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
+      let ticks = "";
+
+      for (let x = xMin; x <= xMax; x += 2) {
+        const px = xScale(x);
+        ticks += `
+          <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
+          <text x="${px}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="12" fill="#475569">${x}</text>
+        `;
+      }
+
+      for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
+        const py = yScale(y);
+        ticks += `
+          <line x1="${margin.left - 6}" y1="${py}" x2="${margin.left}" y2="${py}" stroke="#334155" stroke-width="1"></line>
+          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="12" fill="#475569">${y.toFixed(1)}</text>
+        `;
+      }
+
+      return ticks;
+    }
+
+    drawQuadrantPlot([]);
   </script>
 </body>
 </html>
