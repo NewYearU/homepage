@@ -298,7 +298,6 @@
       color: var(--muted);
     }
 
-    /* Version Log */
     .version-log {
       margin-top: 40px;
       padding: 20px 24px;
@@ -315,25 +314,28 @@
     }
 
     .version-item {
-      padding: 10px 0;
-      border-top: 1px solid #eef2f7;
-    }
-
-    .version-item:first-child {
-      border-top: none;
+      padding-top: 4px;
     }
 
     .version-title {
       font-weight: 700;
       font-size: 0.98rem;
       color: #1f2937;
+      margin-bottom: 6px;
     }
 
     .version-desc {
       margin-top: 4px;
       font-size: 0.92rem;
       color: #6b7280;
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+
+    .version-note {
+      margin-top: 12px;
+      font-size: 0.9rem;
+      color: #6b7280;
+      font-style: italic;
     }
 
     @media (max-width: 980px) {
@@ -796,41 +798,17 @@
 
   <div class="version-log">
     <h2>Version Log</h2>
-
     <div class="version-item">
       <div class="version-title">v1.0 (2026-04)</div>
       <div class="version-desc">
         Initial release.<br>
-        • Macro–micro circulatory framework<br>
+        • Conceptual macro–micro circulatory framework<br>
         • VTI–PI quadrant classification<br>
         • Trajectory-based rule stratification<br>
-        • Interactive visualization tool
+        • Interactive visualization interface
       </div>
-    </div>
-
-    <div class="version-item">
-      <div class="version-title">v1.1 (planned)</div>
-      <div class="version-desc">
-        • UI refinement and layout optimization<br>
-        • Improved interpretation logic<br>
-        • Enhanced labeling consistency
-      </div>
-    </div>
-
-    <div class="version-item">
-      <div class="version-title">v1.2 (planned)</div>
-      <div class="version-desc">
-        • Exploratory 4-class outcome mapping<br>
-        • Integration of trajectory-based outcome categories
-      </div>
-    </div>
-
-    <div class="version-item">
-      <div class="version-title">v2.0 (future)</div>
-      <div class="version-desc">
-        • Multinomial regression model<br>
-        • Probability-based outcome prediction<br>
-        • Internal validation and model calibration
+      <div class="version-note">
+        This tool is intended for hypothesis generation and research demonstration.
       </div>
     </div>
   </div>
