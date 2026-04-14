@@ -419,7 +419,7 @@
         </div>
 
         <div class="quad-note">
-          Ordered spectrum: Concordant high-flow → Macro-predominant mismatch → Micro-predominant mismatch → Concordant low-flow.
+          Color gradient reflects increasing macro–micro severity.
           Vertical cutoff: VTI = 16.9 cm. Horizontal cutoff: PI = 1.2.
         </div>
 
@@ -557,7 +557,6 @@
       const result = analyzeTrajectory(points.map(p => p.state));
 
       document.getElementById("dailyStates").innerHTML =
-        `States (ordered): Concordant high-flow → Macro-predominant mismatch → Micro-predominant mismatch → Concordant low-flow<br><br>` +
         `<strong>Day 1:</strong> ${points[0].state}<br>` +
         `<strong>Day 2:</strong> ${points[1].state}<br>` +
         `<strong>Day 3:</strong> ${points[2].state}`;
@@ -568,7 +567,7 @@
 
       document.getElementById("detailNote").textContent =
         `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
-        `The quadrant plot visualizes day-by-day movement across the ordered macro–micro circulatory spectrum. Predicted risk categories are framework-based and intended for research demonstration only.`;
+        `The quadrant plot visualizes day-by-day movement across macro–micro circulatory states. Predicted risk categories are framework-based and intended for research demonstration only.`;
 
       drawQuadrantPlot(points);
     }
