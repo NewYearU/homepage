@@ -298,6 +298,59 @@
       color: var(--muted);
     }
 
+    .meta-card {
+      margin-top: 28px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+      margin-top: 12px;
+    }
+
+    .meta-item {
+      padding: 14px 16px;
+      border: 1px solid #e7edf3;
+      border-radius: 12px;
+      background: #fcfdff;
+    }
+
+    .meta-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    .meta-text {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .meta-footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #eef2f7;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    .meta-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .meta-footer a:hover {
+      text-decoration: underline;
+    }
+
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -307,8 +360,13 @@
         padding: 28px 22px;
       }
 
-      .card {
+      .card,
+      .meta-card {
         padding: 20px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
       }
 
       h1 {
@@ -431,6 +489,63 @@
           This tool is for research and educational purposes only. It is not intended for clinical decision-making.
         </div>
       </section>
+    </div>
+
+    <div class="meta-card">
+      <h2>Research and Use Information</h2>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-title">Version</div>
+          <div class="meta-text">
+            Current version: v1.1 (updated)<br>
+            Archived version:
+            <a href="macro_micro_v1.html">v1.0 (initial release)</a>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Disclaimer</div>
+          <div class="meta-text">
+            This tool is intended for research, educational, and hypothesis-generating purposes only.
+            It is not designed for clinical decision-making or patient management.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Data Privacy</div>
+          <div class="meta-text">
+            No input data are stored, transmitted, or shared.
+            All calculations are performed locally in the user's browser.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Methodological Note</div>
+          <div class="meta-text">
+            The classification and trajectory rules are based on a conceptual macro–micro circulatory framework
+            and are intended for demonstration purposes.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Suggested Citation</div>
+          <div class="meta-text">
+            Wang J, et al. <em>A Time-Dependent Macro–Micro Circulatory Framework for Prognosis in Critical Illness.</em> (in preparation)
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Contact</div>
+          <div class="meta-text">
+            <a href="mailto:jieicu@gmail.com">jieicu@gmail.com</a> (for academic inquiries)
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-footer">
+        This tool is provided for academic and research purposes only. © 2026 Jie Wang.
+      </div>
     </div>
 
     <div class="footer">
@@ -625,24 +740,19 @@
           </marker>
         </defs>
 
-        <!-- Quadrant backgrounds -->
         <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fef9c3"></rect>
         <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
         <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
         <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fed7aa"></rect>
 
-        <!-- Grid -->
         ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
 
-        <!-- Axes -->
         <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
         <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
 
-        <!-- Cutoff lines -->
         <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
         <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
 
-        <!-- Quadrant labels -->
         <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
           Concordant high-flow
         </text>
@@ -656,7 +766,6 @@
           Concordant low-flow
         </text>
 
-        <!-- Axis labels -->
         <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
           VTI (cm)
         </text>
@@ -665,11 +774,9 @@
           PI
         </text>
 
-        <!-- Cutoff labels -->
         <text x="${cutX + 8}" y="${height - margin.bottom - 10}" font-size="13" fill="#1f4e79">VTI = ${VTI_CUTOFF}</text>
         <text x="${width - margin.right - 74}" y="${cutY - 8}" font-size="13" fill="#1f4e79">PI = ${PI_CUTOFF}</text>
 
-        <!-- Ticks -->
         ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
       `;
 
@@ -755,49 +862,5 @@
 
     drawQuadrantPlot([]);
   </script>
-
-  <!-- ===== Research / Compliance Block ===== -->
-  <div style="margin:40px auto 0;max-width:1180px;padding:20px;border-top:1px solid #e5e7eb;font-size:0.9rem;color:#6b7280;line-height:1.6;">
-
-    <div style="margin-bottom:16px;">
-      <strong>Version</strong><br>
-      Current version: v1.1 (updated)<br>
-      Archived versions:
-      <a href="macro_micro_v1.html">v1.0 (initial release)</a>
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <strong>Disclaimer</strong><br>
-      This tool is intended for research, educational, and hypothesis-generating purposes only.
-      It is not designed for clinical decision-making or patient management.
-      Clinical decisions should always be based on comprehensive clinical assessment.
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <strong>Data privacy</strong><br>
-      No input data are stored, transmitted, or shared. All calculations are performed locally in the user's browser.
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <strong>Methodological note</strong><br>
-      The classification and trajectory rules are based on a conceptual macro–micro circulatory framework and are intended for demonstration purposes.
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <strong>Suggested citation</strong><br>
-      Wang J, et al. A Time-Dependent Macro–Micro Circulatory Framework for Prognosis in Critical Illness. (in preparation)
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <strong>Contact</strong><br>
-      <a href="mailto:jieicu@gmail.com">jieicu@gmail.com</a> (for academic inquiries)
-    </div>
-
-    <div style="font-size:0.8rem;color:#9ca3af;">
-      © 2026 Jie Wang. This tool is provided for academic and research purposes only.
-    </div>
-  </div>
-  <!-- ===== End Block ===== -->
-
 </body>
 </html>
