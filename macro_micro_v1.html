@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Macro–Micro Circulatory Prognostic Tool (Demo)</title>
+  <title>Macro–Micro Circulatory Prognostic Tool (Version 1.0)</title>
   <style>
     :root {
       --bg: #f6f8fb;
@@ -298,44 +298,57 @@
       color: var(--muted);
     }
 
-    .version-log {
-      margin-top: 40px;
-      padding: 20px 24px;
-      background: #ffffff;
-      border: 1px solid #dbe2ea;
-      border-radius: 14px;
+    .meta-card {
+      margin-top: 28px;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
       box-shadow: var(--shadow);
+      padding: 24px;
     }
 
-    .version-log h2 {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
-      color: var(--accent);
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px 24px;
+      margin-top: 12px;
     }
 
-    .version-item {
-      padding-top: 4px;
+    .meta-item {
+      padding: 14px 16px;
+      border: 1px solid #e7edf3;
+      border-radius: 12px;
+      background: #fcfdff;
     }
 
-    .version-title {
+    .meta-title {
+      font-size: 0.9rem;
       font-weight: 700;
-      font-size: 0.98rem;
-      color: #1f2937;
+      color: var(--accent);
       margin-bottom: 6px;
     }
 
-    .version-desc {
-      margin-top: 4px;
+    .meta-text {
       font-size: 0.92rem;
-      color: #6b7280;
+      color: var(--muted);
       line-height: 1.6;
     }
 
-    .version-note {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      color: #6b7280;
-      font-style: italic;
+    .meta-footer {
+      margin-top: 18px;
+      padding-top: 14px;
+      border-top: 1px solid #eef2f7;
+      font-size: 0.85rem;
+      color: #9ca3af;
+    }
+
+    .meta-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .meta-footer a:hover {
+      text-decoration: underline;
     }
 
     @media (max-width: 980px) {
@@ -347,8 +360,13 @@
         padding: 28px 22px;
       }
 
-      .card {
+      .card,
+      .meta-card {
         padding: 20px;
+      }
+
+      .meta-grid {
+        grid-template-columns: 1fr;
       }
 
       h1 {
@@ -360,9 +378,9 @@
 <body>
   <div class="container">
     <section class="hero">
-      <h1>Macro–Micro Circulatory Prognostic Tool (Demo)</h1>
+      <h1>Macro–Micro Circulatory Prognostic Tool (Version 1.0)</h1>
       <p class="subtitle">
-        Based on a time-dependent integration of VTI and PI during the first 3 ICU days
+        Archived initial release based on a time-dependent integration of VTI and PI during the first 3 ICU days
       </p>
     </section>
 
@@ -464,7 +482,7 @@
         </div>
 
         <div class="note" id="detailNote">
-          This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.
+          This archived version summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the original study framework.
         </div>
 
         <div class="disclaimer">
@@ -473,8 +491,66 @@
       </section>
     </div>
 
+    <div class="meta-card">
+      <h2>Research and Use Information</h2>
+
+      <div class="meta-grid">
+        <div class="meta-item">
+          <div class="meta-title">Version</div>
+          <div class="meta-text">
+            <strong>Version 1.0</strong><br>
+            This archived page preserves the initial release of the tool used for reference and reproducibility.<br><br>
+            Latest version:<br>
+            <a href="macro_micro_demo.html">macro_micro_demo.html</a>
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Disclaimer</div>
+          <div class="meta-text">
+            This tool is intended for research, educational, and hypothesis-generating purposes only.
+            It is not designed for clinical decision-making or patient management.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Data Privacy</div>
+          <div class="meta-text">
+            No input data are stored, transmitted, or shared.
+            All calculations are performed locally in the user's browser.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Methodological Note</div>
+          <div class="meta-text">
+            The classification and trajectory rules are based on a conceptual macro–micro circulatory framework
+            and are intended for demonstration purposes.
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Suggested Citation</div>
+          <div class="meta-text">
+            Wang J, et al. <em>A Time-Dependent Macro–Micro Circulatory Framework for Prognosis in Critical Illness.</em> (in preparation)
+          </div>
+        </div>
+
+        <div class="meta-item">
+          <div class="meta-title">Contact</div>
+          <div class="meta-text">
+            <a href="mailto:jieicu@gmail.com">jieicu@gmail.com</a> (for academic inquiries)
+          </div>
+        </div>
+      </div>
+
+      <div class="meta-footer">
+        This tool is provided for academic and research purposes only. © 2026 Jie Wang.
+      </div>
+    </div>
+
     <div class="footer">
-      Demo page for research presentation and framework visualization
+      Archived demo page for research presentation and framework visualization
     </div>
   </div>
 
@@ -633,7 +709,7 @@
       document.getElementById("interpretation").textContent =
         "Enter data and click “Analyze Pattern”.";
       document.getElementById("detailNote").textContent =
-        "This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.";
+        "This archived version summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the original study framework.";
 
       drawQuadrantPlot([]);
     }
@@ -665,24 +741,19 @@
           </marker>
         </defs>
 
-        <!-- Quadrant backgrounds -->
         <rect x="${margin.left}" y="${margin.top}" width="${cutX - margin.left}" height="${cutY - margin.top}" fill="#fef9c3"></rect>
         <rect x="${cutX}" y="${margin.top}" width="${margin.left + plotW - cutX}" height="${cutY - margin.top}" fill="#dcfce7"></rect>
         <rect x="${margin.left}" y="${cutY}" width="${cutX - margin.left}" height="${height - margin.bottom - cutY}" fill="#fee2e2"></rect>
         <rect x="${cutX}" y="${cutY}" width="${margin.left + plotW - cutX}" height="${height - margin.bottom - cutY}" fill="#fed7aa"></rect>
 
-        <!-- Grid -->
         ${drawGridLines(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
 
-        <!-- Axes -->
         <line x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
         <line x1="${margin.left}" y1="${margin.top}" x2="${margin.left}" y2="${height - margin.bottom}" stroke="#334155" stroke-width="1.4"></line>
 
-        <!-- Cutoff lines -->
         <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
         <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
 
-        <!-- Quadrant labels -->
         <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
           Concordant high-flow
         </text>
@@ -696,7 +767,6 @@
           Concordant low-flow
         </text>
 
-        <!-- Axis labels -->
         <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
           VTI (cm)
         </text>
@@ -705,11 +775,9 @@
           PI
         </text>
 
-        <!-- Cutoff labels -->
         <text x="${cutX + 8}" y="${height - margin.bottom - 10}" font-size="13" fill="#1f4e79">VTI = ${VTI_CUTOFF}</text>
         <text x="${width - margin.right - 74}" y="${cutY - 8}" font-size="13" fill="#1f4e79">PI = ${PI_CUTOFF}</text>
 
-        <!-- Ticks -->
         ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
       `;
 
@@ -795,23 +863,5 @@
 
     drawQuadrantPlot([]);
   </script>
-
-  <div class="version-log">
-    <h2>Version Log</h2>
-    <div class="version-item">
-      <div class="version-title">v1.0 (2026-04)</div>
-      <div class="version-desc">
-        Initial release.<br>
-        • Conceptual macro–micro circulatory framework<br>
-        • VTI–PI quadrant classification<br>
-        • Trajectory-based rule stratification<br>
-        • Interactive visualization interface
-      </div>
-      <div class="version-note">
-        This tool is intended for hypothesis generation and research demonstration.
-      </div>
-    </div>
-  </div>
-
 </body>
 </html>
