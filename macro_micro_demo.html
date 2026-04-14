@@ -298,6 +298,44 @@
       color: var(--muted);
     }
 
+    /* Version Log */
+    .version-log {
+      margin-top: 40px;
+      padding: 20px 24px;
+      background: #ffffff;
+      border: 1px solid #dbe2ea;
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+
+    .version-log h2 {
+      margin: 0 0 14px;
+      font-size: 1.2rem;
+      color: var(--accent);
+    }
+
+    .version-item {
+      padding: 10px 0;
+      border-top: 1px solid #eef2f7;
+    }
+
+    .version-item:first-child {
+      border-top: none;
+    }
+
+    .version-title {
+      font-weight: 700;
+      font-size: 0.98rem;
+      color: #1f2937;
+    }
+
+    .version-desc {
+      margin-top: 4px;
+      font-size: 0.92rem;
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -755,5 +793,47 @@
 
     drawQuadrantPlot([]);
   </script>
+
+  <div class="version-log">
+    <h2>Version Log</h2>
+
+    <div class="version-item">
+      <div class="version-title">v1.0 (2026-04)</div>
+      <div class="version-desc">
+        Initial release.<br>
+        • Macro–micro circulatory framework<br>
+        • VTI–PI quadrant classification<br>
+        • Trajectory-based rule stratification<br>
+        • Interactive visualization tool
+      </div>
+    </div>
+
+    <div class="version-item">
+      <div class="version-title">v1.1 (planned)</div>
+      <div class="version-desc">
+        • UI refinement and layout optimization<br>
+        • Improved interpretation logic<br>
+        • Enhanced labeling consistency
+      </div>
+    </div>
+
+    <div class="version-item">
+      <div class="version-title">v1.2 (planned)</div>
+      <div class="version-desc">
+        • Exploratory 4-class outcome mapping<br>
+        • Integration of trajectory-based outcome categories
+      </div>
+    </div>
+
+    <div class="version-item">
+      <div class="version-title">v2.0 (future)</div>
+      <div class="version-desc">
+        • Multinomial regression model<br>
+        • Probability-based outcome prediction<br>
+        • Internal validation and model calibration
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>
