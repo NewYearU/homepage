@@ -298,46 +298,6 @@
       color: var(--muted);
     }
 
-    .version-log {
-      margin-top: 40px;
-      padding: 20px 24px;
-      background: #ffffff;
-      border: 1px solid #dbe2ea;
-      border-radius: 14px;
-      box-shadow: var(--shadow);
-    }
-
-    .version-log h2 {
-      margin: 0 0 14px;
-      font-size: 1.2rem;
-      color: var(--accent);
-    }
-
-    .version-item {
-      padding-top: 4px;
-    }
-
-    .version-title {
-      font-weight: 700;
-      font-size: 0.98rem;
-      color: #1f2937;
-      margin-bottom: 6px;
-    }
-
-    .version-desc {
-      margin-top: 4px;
-      font-size: 0.92rem;
-      color: #6b7280;
-      line-height: 1.6;
-    }
-
-    .version-note {
-      margin-top: 12px;
-      font-size: 0.9rem;
-      color: #6b7280;
-      font-style: italic;
-    }
-
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -796,29 +756,48 @@
     drawQuadrantPlot([]);
   </script>
 
-<div class="version-log">
-  <h2>Version Log</h2>
-  <div class="version-item">
-    <div class="version-title">Current version</div>
-    <div class="version-desc">
-      This page always reflects the latest version of the tool.
+  <!-- ===== Research / Compliance Block ===== -->
+  <div style="margin:40px auto 0;max-width:1180px;padding:20px;border-top:1px solid #e5e7eb;font-size:0.9rem;color:#6b7280;line-height:1.6;">
+
+    <div style="margin-bottom:16px;">
+      <strong>Version</strong><br>
+      Current version: v1.1 (updated)<br>
+      Archived versions:
+      <a href="macro_micro_v1.html">v1.0 (initial release)</a>
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong>Disclaimer</strong><br>
+      This tool is intended for research, educational, and hypothesis-generating purposes only.
+      It is not designed for clinical decision-making or patient management.
+      Clinical decisions should always be based on comprehensive clinical assessment.
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong>Data privacy</strong><br>
+      No input data are stored, transmitted, or shared. All calculations are performed locally in the user's browser.
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong>Methodological note</strong><br>
+      The classification and trajectory rules are based on a conceptual macro–micro circulatory framework and are intended for demonstration purposes.
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong>Suggested citation</strong><br>
+      Wang J, et al. A Time-Dependent Macro–Micro Circulatory Framework for Prognosis in Critical Illness. (in preparation)
+    </div>
+
+    <div style="margin-bottom:16px;">
+      <strong>Contact</strong><br>
+      <a href="mailto:jieicu@gmail.com">jieicu@gmail.com</a> (for academic inquiries)
+    </div>
+
+    <div style="font-size:0.8rem;color:#9ca3af;">
+      © 2026 Jie Wang. This tool is provided for academic and research purposes only.
     </div>
   </div>
-
-  <div class="version-item">
-    <div class="version-title">Archived version</div>
-    <div class="version-desc">
-      <a href="macro_micro_v1.html">v1.0 (2026-04)</a><br>
-      Initial release with the conceptual macro–micro circulatory framework,
-      VTI–PI quadrant classification, trajectory-based rule stratification,
-      and interactive visualization interface.
-    </div>
-  </div>
-
-  <div class="version-note">
-    This tool is intended for hypothesis generation and research demonstration.
-  </div>
-</div>
+  <!-- ===== End Block ===== -->
 
 </body>
 </html>
