@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Macro–Micro Circulatory State and Trajectory Tool (Demo)</title>
 
-  <!-- html2pdf.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
   <style>
@@ -479,32 +478,44 @@
       display: none;
       background: white;
       color: #111827;
-      padding: 28px;
-      width: 900px;
+      padding: 24px 26px;
+      width: 760px;
       max-width: 100%;
+      margin: 0 auto;
     }
 
     .pdf-header {
       border-bottom: 2px solid #dbe2ea;
       padding-bottom: 12px;
       margin-bottom: 18px;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-title {
-      font-size: 1.5rem;
+      font-size: 1.48rem;
       font-weight: 700;
       color: #183b62;
       margin: 0 0 6px;
+      line-height: 1.3;
     }
 
     .pdf-subtitle {
       font-size: 0.95rem;
       color: #6b7280;
-      margin: 0;
+      margin: 0 0 4px;
+    }
+
+    .pdf-date {
+      font-size: 0.86rem;
+      color: #6b7280;
+      margin-top: 2px;
     }
 
     .pdf-section {
       margin-top: 18px;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-section h3 {
@@ -524,6 +535,8 @@
       border-radius: 10px;
       padding: 12px 14px;
       background: #fcfdff;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-box-label {
@@ -543,6 +556,8 @@
       border-collapse: collapse;
       margin-top: 8px;
       font-size: 0.94rem;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-table th,
@@ -550,6 +565,7 @@
       border: 1px solid #dbe2ea;
       padding: 8px 10px;
       text-align: left;
+      vertical-align: middle;
     }
 
     .pdf-table th {
@@ -573,6 +589,8 @@
       padding: 12px;
       background: #ffffff;
       margin-top: 8px;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-figure-wrap svg {
@@ -581,9 +599,10 @@
     }
 
     .pdf-caption {
-      margin-top: 8px;
-      font-size: 0.88rem;
-      color: #6b7280;
+      margin-top: 10px;
+      font-size: 0.87rem;
+      color: #4b5563;
+      line-height: 1.5;
     }
 
     .pdf-note,
@@ -591,6 +610,8 @@
       border-radius: 10px;
       padding: 12px 14px;
       font-size: 0.92rem;
+      break-inside: avoid;
+      page-break-inside: avoid;
     }
 
     .pdf-note {
@@ -603,6 +624,41 @@
       background: #fff2f2;
       border: 1px solid #f2c9c9;
       color: #8b1e1e;
+    }
+
+    .pdf-chip {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      line-height: 1.2;
+      border: 1px solid transparent;
+      white-space: nowrap;
+    }
+
+    .pdf-chip.high {
+      background: #dcfce7;
+      color: #166534;
+      border-color: #86efac;
+    }
+
+    .pdf-chip.macro {
+      background: #fef9c3;
+      color: #854d0e;
+      border-color: #fde047;
+    }
+
+    .pdf-chip.micro {
+      background: #fed7aa;
+      color: #9a3412;
+      border-color: #fdba74;
+    }
+
+    .pdf-chip.low {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #fca5a5;
     }
 
     @media (max-width: 980px) {
@@ -828,6 +884,7 @@
     <div class="pdf-header">
       <div class="pdf-title">Trajectory Analysis Based on a Macro–Micro Circulatory Framework</div>
       <p class="pdf-subtitle">Research Report generated from serial VTI and PI measurements</p>
+      <div class="pdf-date" id="pdfDate">Generated on —</div>
     </div>
 
     <div class="pdf-section">
@@ -876,8 +933,10 @@
         <svg id="pdfQuadrantPlot" viewBox="0 0 760 520" aria-label="PDF VTI-PI quadrant plot"></svg>
       </div>
       <div class="pdf-caption">
-        Figure. Serial macro–micro circulatory trajectory based on VTI and PI measurements.
-        Each point represents a time-specific state, and arrows indicate temporal transitions across predefined quadrants.
+        <strong>Figure 1.</strong> Serial macro–micro circulatory trajectory projected onto the predefined VTI–PI state space. 
+        Each point represents a time-specific observation, and arrows indicate temporal transitions. The four quadrants correspond
+        to concordant high-flow, macro-predominant mismatch, micro-predominant mismatch, and concordant low-flow states
+        defined by fixed VTI and PI thresholds.
       </div>
     </div>
 
@@ -945,6 +1004,22 @@
       if (state === "Micro-predominant mismatch") return "chip-micro";
       if (state === "Concordant low-flow") return "chip-low";
       return "chip-empty";
+    }
+
+    function getPDFChip(state) {
+      if (state === "Concordant high-flow") {
+        return '<span class="pdf-chip high">High-flow</span>';
+      }
+      if (state === "Macro-predominant mismatch") {
+        return '<span class="pdf-chip macro">Macro mismatch</span>';
+      }
+      if (state === "Micro-predominant mismatch") {
+        return '<span class="pdf-chip micro">Micro mismatch</span>';
+      }
+      if (state === "Concordant low-flow") {
+        return '<span class="pdf-chip low">Low-flow</span>';
+      }
+      return escapeHtml(state);
     }
 
     function stateToSeverity(state) {
@@ -1524,11 +1599,18 @@
       return ticks;
     }
 
+    function formatPDFDate(date = new Date()) {
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hour = String(date.getHours()).padStart(2, "0");
+      const minute = String(date.getMinutes()).padStart(2, "0");
+      return `${year}-${month}-${day} ${hour}:${minute}`;
+    }
+
     function populatePDFReport() {
       const points = getValidPointsFromDOM();
       const trajectoryText = document.getElementById("trajectory").textContent.trim();
-      const predictionText = document.getElementById("prediction").textContent.trim();
-      const interpretationText = document.getElementById("interpretation").textContent.trim();
 
       if (points.length < 2 || trajectoryText === "Awaiting input" || trajectoryText === "Insufficient serial data") {
         alert("Please analyze at least two valid time points before exporting the PDF.");
@@ -1537,13 +1619,14 @@
 
       const result = analyzeTrajectory(points);
 
+      document.getElementById("pdfDate").textContent = `Generated on ${formatPDFDate()}`;
       document.getElementById("pdfTrajectory").textContent = result.pattern;
       document.getElementById("pdfRisk").textContent = result.prediction;
-      document.getElementById("pdfInterpretation").textContent = interpretationText;
+      document.getElementById("pdfInterpretation").textContent = result.interpretation;
 
       document.getElementById("pdfFeatures").innerHTML = `
-        <li>Baseline state: ${escapeHtml(result.features.baseline)}</li>
-        <li>Final state: ${escapeHtml(result.features.final)}</li>
+        <li>Baseline state: ${getPDFChip(points[0].state)}</li>
+        <li>Final state: ${getPDFChip(points[points.length - 1].state)}</li>
         <li>Bidirectional reversal: ${escapeHtml(result.features.reversal)}</li>
       `;
 
@@ -1553,7 +1636,7 @@
           <td>${escapeHtml(point.time)}</td>
           <td>${point.vti.toFixed(1)}</td>
           <td>${point.pi.toFixed(1)}</td>
-          <td>${escapeHtml(point.state)}</td>
+          <td>${getPDFChip(point.state)}</td>
         </tr>
       `).join("");
 
@@ -1568,13 +1651,26 @@
       const report = document.getElementById("pdfReport");
       report.style.display = "block";
 
+      window.scrollTo(0, 0);
+
       const opt = {
-        margin: [0.35, 0.35, 0.35, 0.35],
+        margin: [0.45, 0.45, 0.45, 0.45],
         filename: "macro_micro_trajectory_research_report.pdf",
         image: { type: "jpeg", quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
-        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
-        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+        html2canvas: {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          scrollY: 0
+        },
+        jsPDF: {
+          unit: "in",
+          format: "letter",
+          orientation: "portrait"
+        },
+        pagebreak: {
+          mode: ["css", "legacy"]
+        }
       };
 
       try {
