@@ -4,9 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Macro–Micro Circulatory State and Trajectory Tool (Demo)</title>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
   <style>
     :root {
       --bg: #f6f8fb;
@@ -195,6 +192,7 @@
       min-width: 96px;
     }
 
+    /* Hide spinner buttons for cleaner numeric display */
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -473,199 +471,6 @@
       color: var(--accent);
     }
 
-    /* PDF report */
-    .pdf-report {
-      display: none;
-      background: white;
-      color: #111827;
-      padding: 18px 22px;
-      width: 740px;
-      max-width: 100%;
-      margin: 0 auto;
-    }
-
-    .pdf-header {
-      border-bottom: 2px solid #dbe2ea;
-      padding-bottom: 10px;
-      margin-bottom: 14px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .pdf-title {
-      font-size: 1.34rem;
-      font-weight: 700;
-      color: #183b62;
-      margin: 0 0 4px;
-      line-height: 1.28;
-    }
-
-    .pdf-subtitle {
-      font-size: 0.9rem;
-      color: #6b7280;
-      margin: 0 0 2px;
-    }
-
-    .pdf-date {
-      font-size: 0.82rem;
-      color: #6b7280;
-      margin-top: 2px;
-    }
-
-    .pdf-section {
-      margin-top: 14px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .pdf-section h3 {
-      margin: 0 0 7px;
-      color: #183b62;
-      font-size: 0.98rem;
-    }
-
-    .pdf-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .pdf-box {
-      border: 1px solid #dbe2ea;
-      border-radius: 10px;
-      padding: 10px 12px;
-      background: #fcfdff;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .pdf-box-label {
-      color: #6b7280;
-      font-size: 0.82rem;
-      margin-bottom: 4px;
-    }
-
-    .pdf-box-value {
-      font-weight: 700;
-      color: #1f2937;
-      font-size: 0.98rem;
-    }
-
-    .pdf-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 6px;
-      font-size: 0.9rem;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .pdf-table th,
-    .pdf-table td {
-      border: 1px solid #dbe2ea;
-      padding: 7px 9px;
-      text-align: left;
-      vertical-align: middle;
-    }
-
-    .pdf-table th {
-      background: #f4f7fb;
-      color: #183b62;
-      font-weight: 700;
-    }
-
-    .pdf-list {
-      margin: 4px 0 0;
-      padding-left: 18px;
-      font-size: 0.92rem;
-    }
-
-    .pdf-list li {
-      margin: 4px 0;
-    }
-
-    .pdf-figure-wrap {
-      border: 1px solid #dbe2ea;
-      border-radius: 12px;
-      padding: 10px 10px 16px;
-      background: #ffffff;
-      margin-top: 6px;
-      break-inside: avoid;
-      page-break-inside: avoid;
-      overflow: visible;
-    }
-
-    .pdf-figure-wrap svg {
-      display: block;
-      width: 100%;
-      height: 390px;
-      max-height: none;
-      overflow: visible;
-    }
-
-    .pdf-caption {
-      margin-top: 8px;
-      font-size: 0.83rem;
-      color: #4b5563;
-      line-height: 1.45;
-    }
-
-    .pdf-note,
-    .pdf-disclaimer {
-      border-radius: 10px;
-      padding: 10px 12px;
-      font-size: 0.88rem;
-      break-inside: avoid;
-      page-break-inside: avoid;
-    }
-
-    .pdf-note {
-      background: #f8fbfe;
-      border: 1px solid #dbe7f2;
-      color: #334155;
-    }
-
-    .pdf-disclaimer {
-      background: #fff2f2;
-      border: 1px solid #f2c9c9;
-      color: #8b1e1e;
-    }
-
-    .pdf-chip {
-      display: inline-block;
-      padding: 4px 8px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      line-height: 1.2;
-      border: 1px solid transparent;
-      white-space: nowrap;
-    }
-
-    .pdf-chip.high {
-      background: #dcfce7;
-      color: #166534;
-      border-color: #86efac;
-    }
-
-    .pdf-chip.macro {
-      background: #fef9c3;
-      color: #854d0e;
-      border-color: #fde047;
-    }
-
-    .pdf-chip.micro {
-      background: #fed7aa;
-      color: #9a3412;
-      border-color: #fdba74;
-    }
-
-    .pdf-chip.low {
-      background: #fee2e2;
-      color: #991b1b;
-      border-color: #fca5a5;
-    }
-
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -747,7 +552,6 @@
           <button class="secondary" onclick="fillExample()">Load Example</button>
           <button class="secondary" onclick="loadFluctuatingExample()">Load Fluctuating Example</button>
           <button class="secondary" onclick="resetForm()">Reset</button>
-          <button class="secondary" onclick="exportPDF()">Export PDF</button>
         </div>
 
         <div class="rule-box">
@@ -884,91 +688,6 @@
     </div>
   </div>
 
-  <div id="pdfReport" class="pdf-report">
-    <div class="pdf-header">
-      <div class="pdf-title">Trajectory Analysis Based on a Macro–Micro Circulatory Framework</div>
-      <p class="pdf-subtitle">Research Report generated from serial VTI and PI measurements</p>
-      <div class="pdf-date" id="pdfDate">Generated on —</div>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Derived Trajectory</h3>
-      <div class="pdf-grid">
-        <div class="pdf-box">
-          <div class="pdf-box-label">Trajectory phenotype</div>
-          <div class="pdf-box-value" id="pdfTrajectory">—</div>
-        </div>
-        <div class="pdf-box">
-          <div class="pdf-box-label">Framework-based risk tier</div>
-          <div class="pdf-box-value" id="pdfRisk">—</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Trajectory Features</h3>
-      <ul class="pdf-list" id="pdfFeatures">
-        <li>Baseline state: —</li>
-        <li>Final state: —</li>
-        <li>Bidirectional reversal: —</li>
-      </ul>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Serial Input Data</h3>
-      <table class="pdf-table">
-        <thead>
-          <tr>
-            <th>Time</th>
-            <th>VTI (cm)</th>
-            <th>PI</th>
-            <th>Derived state</th>
-          </tr>
-        </thead>
-        <tbody id="pdfTableBody">
-          <tr><td colspan="4">No data</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Quadrant Plot</h3>
-      <div class="pdf-figure-wrap" id="pdfFigureWrap">
-        <svg id="pdfQuadrantPlot" viewBox="0 0 760 470" aria-label="PDF VTI-PI quadrant plot"></svg>
-      </div>
-      <div class="pdf-caption">
-        <strong>Figure 1.</strong> Serial macro–micro circulatory trajectory projected onto the predefined VTI–PI state space.
-        Each point represents a time-specific observation, and arrows indicate temporal transitions. The four quadrants correspond
-        to concordant high-flow, macro-predominant mismatch, micro-predominant mismatch, and concordant low-flow states defined
-        by fixed VTI and PI thresholds.
-      </div>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Interpretation</h3>
-      <div class="pdf-note" id="pdfInterpretation">
-        —
-      </div>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Methodological Note</h3>
-      <div class="pdf-note">
-        This report is generated using a rule-based trajectory classification framework based on
-        predefined VTI and PI thresholds. The trajectory phenotype is determined by baseline and
-        final states, overall severity trends, and the presence of bidirectional transitions.
-      </div>
-    </div>
-
-    <div class="pdf-section">
-      <h3>Disclaimer</h3>
-      <div class="pdf-disclaimer">
-        This report is intended for research and educational purposes only. It does not constitute
-        clinical decision support and should not be used for patient management.
-      </div>
-    </div>
-  </div>
-
   <script>
     const VTI_CUTOFF = 16.9;
     const PI_CUTOFF = 1.2;
@@ -1008,22 +727,6 @@
       if (state === "Micro-predominant mismatch") return "chip-micro";
       if (state === "Concordant low-flow") return "chip-low";
       return "chip-empty";
-    }
-
-    function getPDFChip(state) {
-      if (state === "Concordant high-flow") {
-        return '<span class="pdf-chip high">High-flow</span>';
-      }
-      if (state === "Macro-predominant mismatch") {
-        return '<span class="pdf-chip macro">Macro mismatch</span>';
-      }
-      if (state === "Micro-predominant mismatch") {
-        return '<span class="pdf-chip micro">Micro mismatch</span>';
-      }
-      if (state === "Concordant low-flow") {
-        return '<span class="pdf-chip low">Low-flow</span>';
-      }
-      return escapeHtml(state);
     }
 
     function stateToSeverity(state) {
@@ -1079,13 +782,13 @@
         const chipLabel = hasBoth ? getShortState(state) : "Awaiting values";
         const canDelete = rowsData.length > 2;
 
-        tr.innerHTML = `
+        tr.innerHTML = 
           <td>
             <input
               type="text"
               class="time-field time-input"
               placeholder="e.g. Day 1 / 6h / 12h"
-              value="${escapeHtml(row.time || `Time ${index + 1}`)}"
+              value="${escapeHtml(row.time || Time ${index + 1})}"
               oninput="updateRowState(this)"
             />
           </td>
@@ -1117,11 +820,11 @@
           <td>
             ${
               canDelete
-                ? `<button class="danger-lite" type="button" onclick="removeRow(${row.id})">Remove</button>`
-                : `<span class="small">Minimum 2 rows</span>`
+                ? <button class="danger-lite" type="button" onclick="removeRow(${row.id})">Remove</button>
+                : <span class="small">Minimum 2 rows</span>
             }
           </td>
-        `;
+        ;
 
         tbody.appendChild(tr);
       });
@@ -1132,15 +835,14 @@
     function initializeRows() {
       const rows = DEFAULT_ROWS.map(item => createRow(item));
       renderRows(rows);
-      drawQuadrantPlot([], "quadrantPlot");
-      drawQuadrantPlot([], "pdfQuadrantPlot");
+      drawQuadrantPlot([]);
     }
 
     function addRow(prefill = { time: "", vti: "", pi: "" }) {
       const rows = getAllRowsDataFromDOM();
       const nextLabel = prefill.time && String(prefill.time).trim()
         ? prefill.time
-        : `Day ${rows.length + 1}`;
+        : Day ${rows.length + 1};
 
       rows.push(createRow({
         time: nextLabel,
@@ -1185,7 +887,7 @@
       }
 
       const state = getState(vtiValue, piValue);
-      chip.className = `state-chip ${getChipClass(state)}`;
+      chip.className = state-chip ${getChipClass(state)};
       chip.textContent = getShortState(state);
     }
 
@@ -1234,6 +936,12 @@
 
     function hasBothHighAndLow(states) {
       return highCount(states) > 0 && lowCount(states) > 0;
+    }
+
+    function severityName(score) {
+      if (score === 0) return "high-flow";
+      if (score === 1) return "mismatch";
+      return "low-flow";
     }
 
     function yesNo(value) {
@@ -1285,14 +993,14 @@
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
+            "The profile demonstrated bidirectional switching between more favorable and less favorable states, preventing a sustained directional classification."
         };
       } else if (reversalPresent && baselineSeverity !== finalSeverity) {
         result = {
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
+            "Although the baseline and final states differed, the intermediate sequence showed directional reversal, favoring a fluctuating rather than a sustained improving or worsening interpretation."
         };
       } else if (finalSeverity < baselineSeverity && !reversalPresent) {
         result = {
@@ -1313,7 +1021,7 @@
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
+            "The trajectory returned to a similar severity level but displayed directional instability along the way, supporting a fluctuating pattern."
         };
       } else if (baselineSeverity === 2 && finalSeverity === 2) {
         result = {
@@ -1337,6 +1045,14 @@
         reversal: yesNo(reversalPresent)
       };
 
+      if (!reversalPresent && finalSeverity !== baselineSeverity) {
+        result.features.direction = finalSeverity < baselineSeverity ? "Improving" : "Worsening";
+      } else if (reversalPresent) {
+        result.features.direction = "Bidirectional";
+      } else {
+        result.features.direction = "Stable / indeterminate";
+      }
+
       return result;
     }
 
@@ -1345,7 +1061,7 @@
 
       return rows
         .map((row, index) => {
-          const time = String(row.time || "").trim() || `Time ${index + 1}`;
+          const time = String(row.time || "").trim() || Time ${index + 1};
           const vti = parseFloat(row.vti);
           const pi = parseFloat(row.pi);
 
@@ -1365,16 +1081,16 @@
 
     function formatDailyStates(points) {
       return points.map(point => {
-        return `<strong>${escapeHtml(point.time)}:</strong> ${escapeHtml(point.state)} <span style="color:#64748b;">(${point.vti.toFixed(1)}, ${point.pi.toFixed(1)})</span>`;
+        return <strong>${escapeHtml(point.time)}:</strong> ${escapeHtml(point.state)} <span style="color:#64748b;">(${point.vti.toFixed(1)}, ${point.pi.toFixed(1)})</span>;
       }).join("<br>");
     }
 
     function renderTrajectoryFeatures(features) {
-      return `
+      return 
         <li>Baseline: ${escapeHtml(features.baseline)}</li>
         <li>Final: ${escapeHtml(features.final)}</li>
         <li>Reversal: ${escapeHtml(features.reversal)}</li>
-      `;
+      ;
     }
 
     function analyzePattern() {
@@ -1387,14 +1103,14 @@
         document.getElementById("prediction").textContent = "Insufficient serial data";
         document.getElementById("interpretation").textContent =
           "Trajectory interpretation requires at least two time points with both VTI and PI.";
-        document.getElementById("trajectoryFeatures").innerHTML = `
+        document.getElementById("trajectoryFeatures").innerHTML = 
           <li>Baseline: —</li>
           <li>Final: —</li>
           <li>Reversal: —</li>
-        `;
+        ;
         document.getElementById("detailNote").textContent =
           "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored, and values must be non-negative.";
-        drawQuadrantPlot(points, "quadrantPlot");
+        drawQuadrantPlot(points);
         return;
       }
 
@@ -1407,11 +1123,11 @@
       document.getElementById("trajectoryFeatures").innerHTML = renderTrajectoryFeatures(result.features);
 
       document.getElementById("detailNote").textContent =
-        `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
-        `Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals. ` +
-        `Framework-based risk labels are for research demonstration only.`;
+        Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}.  +
+        Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals.  +
+        Framework-based risk labels are for research demonstration only.;
 
-      drawQuadrantPlot(points, "quadrantPlot");
+      drawQuadrantPlot(points);
     }
 
     function analyzeIfPossible() {
@@ -1447,29 +1163,23 @@
       document.getElementById("prediction").textContent = "Awaiting input";
       document.getElementById("interpretation").textContent =
         "Enter serial VTI and PI values and click “Analyze Pattern”.";
-      document.getElementById("trajectoryFeatures").innerHTML = `
+      document.getElementById("trajectoryFeatures").innerHTML = 
         <li>Baseline: —</li>
         <li>Final: —</li>
         <li>Reversal: —</li>
-      `;
+      ;
       document.getElementById("detailNote").textContent =
         "This demo uses rule-based trajectory interpretation based on serial VTI and PI measurements.";
 
-      drawQuadrantPlot([], "quadrantPlot");
-      drawQuadrantPlot([], "pdfQuadrantPlot");
+      drawQuadrantPlot([]);
     }
 
-    function drawQuadrantPlot(points, svgId = "quadrantPlot") {
-      const svg = document.getElementById(svgId);
-      const isPDF = svgId === "pdfQuadrantPlot";
-
+    function drawQuadrantPlot(points) {
+      const svg = document.getElementById("quadrantPlot");
       const width = 760;
-      const height = isPDF ? 470 : 520;
+      const height = 520;
 
-      const margin = isPDF
-        ? { top: 28, right: 24, bottom: 72, left: 62 }
-        : { top: 36, right: 28, bottom: 58, left: 72 };
-
+      const margin = { top: 36, right: 28, bottom: 58, left: 72 };
       const plotW = width - margin.left - margin.right;
       const plotH = height - margin.top - margin.bottom;
 
@@ -1484,19 +1194,9 @@
       const cutX = xScale(VTI_CUTOFF);
       const cutY = yScale(PI_CUTOFF);
 
-      const titleFont = isPDF ? 12 : 15;
-      const axisFont = isPDF ? 13 : 15;
-      const tickFont = isPDF ? 11 : 12;
-      const pointLabelFont = isPDF ? 12 : 13;
-      const pointValueFont = isPDF ? 11 : 12;
-      const pointRadius = isPDF ? 7 : 8;
-
-      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
-      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
-
       let content = `
         <defs>
-          <marker id="${svgId}-arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
           </marker>
         </defs>
@@ -1514,35 +1214,35 @@
         <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
         <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
 
-        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 22}" text-anchor="middle" font-size="${titleFont}" fill="#ca8a04" font-weight="700">
-          Macro-predominant mismatch
-        </text>
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 22}" text-anchor="middle" font-size="${titleFont}" fill="#16a34a" font-weight="700">
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
           Concordant high-flow
         </text>
-        <text x="${(margin.left + cutX) / 2}" y="${cutY + 24}" text-anchor="middle" font-size="${titleFont}" fill="#dc2626" font-weight="700">
-          Concordant low-flow
+        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#ca8a04" font-weight="700">
+          Macro-predominant mismatch
         </text>
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 24}" text-anchor="middle" font-size="${titleFont}" fill="#ea580c" font-weight="700">
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#ea580c" font-weight="700">
           Micro-predominant mismatch
         </text>
+        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#dc2626" font-weight="700">
+          Concordant low-flow
+        </text>
 
-        <text x="${margin.left + plotW / 2}" y="${height - 24}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600">
+        <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
           VTI (cm)
         </text>
-        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600"
+        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600"
               transform="rotate(-90, 18, ${margin.top + plotH / 2})">
           PI
         </text>
 
-        ${drawTicksCustom(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height, tickFont)}
+        ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
       `;
 
       if (points.length > 0) {
         for (let i = 0; i < points.length - 1; i++) {
           const p1 = points[i];
           const p2 = points[i + 1];
-          content += `
+          content += 
             <line
               x1="${xScale(p1.vti)}"
               y1="${yScale(p1.pi)}"
@@ -1550,31 +1250,31 @@
               y2="${yScale(p2.pi)}"
               stroke="#64748b"
               stroke-width="2.5"
-              marker-end="url(#${svgId}-arrowHead)"
+              marker-end="url(#arrowHead)"
             ></line>
-          `;
+          ;
         }
 
         points.forEach((p) => {
           const cx = xScale(p.vti);
           const cy = yScale(p.pi);
           const color = getColor(p.state);
-          content += `
-            <circle cx="${cx}" cy="${cy}" r="${pointRadius}" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
-            <text x="${cx + 10}" y="${cy - 10}" font-size="${pointLabelFont}" fill="${color}" font-weight="700">
+          content += 
+            <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
+            <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
               ${escapeHtml(p.time)}
             </text>
-            <text x="${cx + 10}" y="${cy + 7}" font-size="${pointValueFont}" fill="#475569">
+            <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
               (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
             </text>
-          `;
+          ;
         });
       } else {
-        content += `
-          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#94a3b8">
+        content += 
+          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
             Enter serial VTI and PI values to display the trajectory
           </text>
-        `;
+        ;
       }
 
       svg.innerHTML = content;
@@ -1585,119 +1285,37 @@
 
       for (let x = xMin; x <= xMax; x += 2) {
         const px = xScale(x);
-        lines += `<line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>`;
+        lines += <line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>;
       }
 
       for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
         const py = yScale(y);
-        lines += `<line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>`;
+        lines += <line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>;
       }
 
       return lines;
     }
 
-    function drawTicksCustom(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height, tickFont) {
+    function drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
       let ticks = "";
 
       for (let x = xMin; x <= xMax; x += 2) {
         const px = xScale(x);
-        ticks += `
+        ticks += 
           <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
-          <text x="${px}" y="${height - margin.bottom + 18}" text-anchor="middle" font-size="${tickFont}" fill="#475569">${x}</text>
-        `;
+          <text x="${px}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="12" fill="#475569">${x}</text>
+        ;
       }
 
       for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
         const py = yScale(y);
-        ticks += `
+        ticks += 
           <line x1="${margin.left - 6}" y1="${py}" x2="${margin.left}" y2="${py}" stroke="#334155" stroke-width="1"></line>
-          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="${tickFont}" fill="#475569">${y.toFixed(1)}</text>
-        `;
+          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="12" fill="#475569">${y.toFixed(1)}</text>
+        ;
       }
 
       return ticks;
-    }
-
-    function formatPDFDate(date = new Date()) {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      const hour = String(date.getHours()).padStart(2, "0");
-      const minute = String(date.getMinutes()).padStart(2, "0");
-      return `${year}-${month}-${day} ${hour}:${minute}`;
-    }
-
-    function populatePDFReport() {
-      const points = getValidPointsFromDOM();
-      const trajectoryText = document.getElementById("trajectory").textContent.trim();
-
-      if (points.length < 2 || trajectoryText === "Awaiting input" || trajectoryText === "Insufficient serial data") {
-        alert("Please analyze at least two valid time points before exporting the PDF.");
-        return false;
-      }
-
-      const result = analyzeTrajectory(points);
-
-      document.getElementById("pdfDate").textContent = `Generated on ${formatPDFDate()}`;
-      document.getElementById("pdfTrajectory").textContent = result.pattern;
-      document.getElementById("pdfRisk").textContent = result.prediction;
-      document.getElementById("pdfInterpretation").textContent = result.interpretation;
-
-      document.getElementById("pdfFeatures").innerHTML = `
-        <li>Baseline state: ${getPDFChip(points[0].state)}</li>
-        <li>Final state: ${getPDFChip(points[points.length - 1].state)}</li>
-        <li>Bidirectional reversal: ${escapeHtml(result.features.reversal)}</li>
-      `;
-
-      const tableBody = document.getElementById("pdfTableBody");
-      tableBody.innerHTML = points.map(point => `
-        <tr>
-          <td>${escapeHtml(point.time)}</td>
-          <td>${point.vti.toFixed(1)}</td>
-          <td>${point.pi.toFixed(1)}</td>
-          <td>${getPDFChip(point.state)}</td>
-        </tr>
-      `).join("");
-
-      drawQuadrantPlot(points, "pdfQuadrantPlot");
-      return true;
-    }
-
-    async function exportPDF() {
-      const ok = populatePDFReport();
-      if (!ok) return;
-
-      const report = document.getElementById("pdfReport");
-      report.style.display = "block";
-
-      window.scrollTo(0, 0);
-
-      const opt = {
-        margin: [0.3, 0.3, 0.3, 0.3],
-        filename: "macro_micro_trajectory_research_report.pdf",
-        image: { type: "jpeg", quality: 0.98 },
-        html2canvas: {
-          scale: 2,
-          useCORS: true,
-          backgroundColor: "#ffffff",
-          scrollY: 0
-        },
-        jsPDF: {
-          unit: "in",
-          format: "letter",
-          orientation: "portrait"
-        },
-        pagebreak: {
-          mode: ["css", "legacy"],
-          avoid: [".pdf-figure-wrap", ".pdf-box", ".pdf-note", ".pdf-disclaimer", ".pdf-table"]
-        }
-      };
-
-      try {
-        await html2pdf().set(opt).from(report).save();
-      } finally {
-        report.style.display = "none";
-      }
     }
 
     initializeRows();
