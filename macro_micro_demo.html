@@ -741,11 +741,10 @@
 
         const parsedVti = parseFloat(row.vti);
         const parsedPi = parseFloat(row.pi);
-        const hasBoth = !Number.isNaN(parsedVti) && !Number.isNaN(parsedPi);
+        const hasBoth = !Number.isNaN(parsedVti) && !Number.isNaN(parsedPi) && parsedVti >= 0 && parsedPi >= 0;
         const state = hasBoth ? getState(parsedVti, parsedPi) : "";
         const chipClass = hasBoth ? getChipClass(state) : "chip-empty";
         const chipLabel = hasBoth ? state : "Awaiting values";
-
         const canDelete = rowsData.length > 2;
 
         tr.innerHTML = `
@@ -755,7 +754,7 @@
               class="time-field time-input"
               placeholder="e.g. Day 1 / 6h / 12h"
               value="${escapeHtml(row.time || `Time ${index + 1}`)}"
-              oninput="updateAutoStates()"
+              oninput="updateRowState(this)"
             />
           </td>
           <td>
@@ -763,9 +762,10 @@
               type="number"
               class="vti-field"
               step="0.1"
+              min="0"
               placeholder="e.g. 15.8"
               value="${escapeHtml(row.vti)}"
-              oninput="updateAutoStates()"
+              oninput="updateRowState(this)"
             />
           </td>
           <td>
@@ -773,9 +773,10 @@
               type="number"
               class="pi-field"
               step="0.1"
+              min="0"
               placeholder="e.g. 1.4"
               value="${escapeHtml(row.pi)}"
-              oninput="updateAutoStates()"
+              oninput="updateRowState(this)"
             />
           </td>
           <td>
@@ -792,6 +793,8 @@
 
         tbody.appendChild(tr);
       });
+
+      refreshAllRowStates();
     }
 
     function initializeRows() {
@@ -819,12 +822,48 @@
       if (rows.length <= 2) return;
       const filtered = rows.filter(row => row.id !== id);
       renderRows(filtered);
-      updateAutoStates();
+      analyzeIfPossible();
     }
 
-    function updateAutoStates() {
-      const rows = getAllRowsDataFromDOM();
-      renderRows(rows);
+    function updateRowState(inputEl) {
+      const row = inputEl.closest("tr");
+      if (!row) return;
+
+      const vtiField = row.querySelector(".vti-field");
+      const piField = row.querySelector(".pi-field");
+      const chip = row.querySelector(".state-chip");
+
+      let vtiValue = parseFloat(vtiField.value);
+      let piValue = parseFloat(piField.value);
+
+      if (!Number.isNaN(vtiValue) && vtiValue < 0) {
+        vtiValue = 0;
+        vtiField.value = "0";
+      }
+      if (!Number.isNaN(piValue) && piValue < 0) {
+        piValue = 0;
+        piField.value = "0";
+      }
+
+      if (Number.isNaN(vtiValue) || Number.isNaN(piValue)) {
+        chip.className = "state-chip chip-empty";
+        chip.textContent = "Awaiting values";
+        return;
+      }
+
+      const state = getState(vtiValue, piValue);
+      chip.className = `state-chip ${getChipClass(state)}`;
+      chip.textContent = state;
+    }
+
+    function refreshAllRowStates() {
+      const rows = Array.from(document.querySelectorAll("#inputRows tr"));
+      rows.forEach(row => {
+        const anyInput = row.querySelector(".time-field") || row.querySelector(".vti-field");
+        if (anyInput) {
+          updateRowState(anyInput);
+        }
+      });
     }
 
     function countDirectionalReversals(severities) {
@@ -844,10 +883,6 @@
       }
 
       return reversals;
-    }
-
-    function isAllHigh(states) {
-      return states.every(state => state === "Concordant high-flow");
     }
 
     function isAllLow(states) {
@@ -878,7 +913,6 @@
 
     function analyzeTrajectory(points) {
       const states = points.map(p => p.state);
-      const times = points.map(p => p.time);
       const severities = states.map(stateToSeverity);
       const baselineSeverity = severities[0];
       const finalSeverity = severities[severities.length - 1];
@@ -887,7 +921,6 @@
       const finalState = states[states.length - 1];
 
       const highProportion = highCount(states) / states.length;
-      const lowProportion = lowCount(states) / states.length;
 
       if (
         baselineState === "Concordant high-flow" &&
@@ -1061,7 +1094,7 @@
           const vti = parseFloat(row.vti);
           const pi = parseFloat(row.pi);
 
-          if (Number.isNaN(vti) || Number.isNaN(pi)) {
+          if (Number.isNaN(vti) || Number.isNaN(pi) || vti < 0 || pi < 0) {
             return null;
           }
 
@@ -1086,7 +1119,7 @@
 
       if (points.length < 2) {
         document.getElementById("dailyStates").textContent =
-          "Please enter at least two complete VTI–PI pairs.";
+          "Please enter at least two complete non-negative VTI–PI pairs.";
         document.getElementById("trajectory").textContent = "Insufficient serial data";
         document.getElementById("prediction").textContent = "Insufficient serial data";
         document.getElementById("interpretation").textContent =
@@ -1094,7 +1127,7 @@
         document.getElementById("decisionSummary").textContent =
           "At least two classifiable serial assessments are required.";
         document.getElementById("detailNote").textContent =
-          "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored.";
+          "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored, and values must be non-negative.";
         drawQuadrantPlot(points);
         return;
       }
@@ -1113,6 +1146,13 @@
         `Framework-based risk labels are for research demonstration only.`;
 
       drawQuadrantPlot(points);
+    }
+
+    function analyzeIfPossible() {
+      const points = getValidPointsFromDOM();
+      if (points.length >= 2) {
+        analyzePattern();
+      }
     }
 
     function fillExample() {
@@ -1232,7 +1272,7 @@
           `;
         }
 
-        points.forEach((p, index) => {
+        points.forEach((p) => {
           const cx = xScale(p.vti);
           const cy = yScale(p.pi);
           const color = getColor(p.state);
