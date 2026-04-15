@@ -587,18 +587,20 @@
     .pdf-figure-wrap {
       border: 1px solid #dbe2ea;
       border-radius: 12px;
-      padding: 10px;
+      padding: 10px 10px 16px;
       background: #ffffff;
       margin-top: 6px;
       break-inside: avoid;
       page-break-inside: avoid;
-      overflow: hidden;
+      overflow: visible;
     }
 
     .pdf-figure-wrap svg {
+      display: block;
       width: 100%;
-      height: auto;
-      max-height: 420px;
+      height: 390px;
+      max-height: none;
+      overflow: visible;
     }
 
     .pdf-caption {
@@ -932,7 +934,7 @@
     <div class="pdf-section">
       <h3>Quadrant Plot</h3>
       <div class="pdf-figure-wrap" id="pdfFigureWrap">
-        <svg id="pdfQuadrantPlot" viewBox="0 0 760 430" aria-label="PDF VTI-PI quadrant plot"></svg>
+        <svg id="pdfQuadrantPlot" viewBox="0 0 760 470" aria-label="PDF VTI-PI quadrant plot"></svg>
       </div>
       <div class="pdf-caption">
         <strong>Figure 1.</strong> Serial macro–micro circulatory trajectory projected onto the predefined VTI–PI state space.
@@ -1462,10 +1464,10 @@
       const isPDF = svgId === "pdfQuadrantPlot";
 
       const width = 760;
-      const height = isPDF ? 430 : 520;
+      const height = isPDF ? 470 : 520;
 
       const margin = isPDF
-        ? { top: 28, right: 24, bottom: 50, left: 62 }
+        ? { top: 28, right: 24, bottom: 72, left: 62 }
         : { top: 36, right: 28, bottom: 58, left: 72 };
 
       const plotW = width - margin.left - margin.right;
@@ -1490,6 +1492,7 @@
       const pointRadius = isPDF ? 7 : 8;
 
       svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
+      svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
 
       let content = `
         <defs>
@@ -1524,7 +1527,7 @@
           Micro-predominant mismatch
         </text>
 
-        <text x="${margin.left + plotW / 2}" y="${height - 14}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600">
+        <text x="${margin.left + plotW / 2}" y="${height - 24}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600">
           VTI (cm)
         </text>
         <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600"
@@ -1600,7 +1603,7 @@
         const px = xScale(x);
         ticks += `
           <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
-          <text x="${px}" y="${height - margin.bottom + 20}" text-anchor="middle" font-size="${tickFont}" fill="#475569">${x}</text>
+          <text x="${px}" y="${height - margin.bottom + 18}" text-anchor="middle" font-size="${tickFont}" fill="#475569">${x}</text>
         `;
       }
 
