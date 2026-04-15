@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Macro–Micro Circulatory State and Trajectory Tool (Demo)</title>
+
+  <!-- html2pdf.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
   <style>
     :root {
       --bg: #f6f8fb;
@@ -192,7 +196,6 @@
       min-width: 96px;
     }
 
-    /* Hide spinner buttons for cleaner numeric display */
     input[type="number"]::-webkit-outer-spin-button,
     input[type="number"]::-webkit-inner-spin-button {
       -webkit-appearance: none;
@@ -471,6 +474,137 @@
       color: var(--accent);
     }
 
+    /* PDF report */
+    .pdf-report {
+      display: none;
+      background: white;
+      color: #111827;
+      padding: 28px;
+      width: 900px;
+      max-width: 100%;
+    }
+
+    .pdf-header {
+      border-bottom: 2px solid #dbe2ea;
+      padding-bottom: 12px;
+      margin-bottom: 18px;
+    }
+
+    .pdf-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #183b62;
+      margin: 0 0 6px;
+    }
+
+    .pdf-subtitle {
+      font-size: 0.95rem;
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .pdf-section {
+      margin-top: 18px;
+    }
+
+    .pdf-section h3 {
+      margin: 0 0 8px;
+      color: #183b62;
+      font-size: 1rem;
+    }
+
+    .pdf-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .pdf-box {
+      border: 1px solid #dbe2ea;
+      border-radius: 10px;
+      padding: 12px 14px;
+      background: #fcfdff;
+    }
+
+    .pdf-box-label {
+      color: #6b7280;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .pdf-box-value {
+      font-weight: 700;
+      color: #1f2937;
+      font-size: 1rem;
+    }
+
+    .pdf-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+      font-size: 0.94rem;
+    }
+
+    .pdf-table th,
+    .pdf-table td {
+      border: 1px solid #dbe2ea;
+      padding: 8px 10px;
+      text-align: left;
+    }
+
+    .pdf-table th {
+      background: #f4f7fb;
+      color: #183b62;
+      font-weight: 700;
+    }
+
+    .pdf-list {
+      margin: 6px 0 0;
+      padding-left: 18px;
+    }
+
+    .pdf-list li {
+      margin: 4px 0;
+    }
+
+    .pdf-figure-wrap {
+      border: 1px solid #dbe2ea;
+      border-radius: 12px;
+      padding: 12px;
+      background: #ffffff;
+      margin-top: 8px;
+    }
+
+    .pdf-figure-wrap svg {
+      width: 100%;
+      height: auto;
+    }
+
+    .pdf-caption {
+      margin-top: 8px;
+      font-size: 0.88rem;
+      color: #6b7280;
+    }
+
+    .pdf-note,
+    .pdf-disclaimer {
+      border-radius: 10px;
+      padding: 12px 14px;
+      font-size: 0.92rem;
+    }
+
+    .pdf-note {
+      background: #f8fbfe;
+      border: 1px solid #dbe7f2;
+      color: #334155;
+    }
+
+    .pdf-disclaimer {
+      background: #fff2f2;
+      border: 1px solid #f2c9c9;
+      color: #8b1e1e;
+    }
+
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -552,6 +686,7 @@
           <button class="secondary" onclick="fillExample()">Load Example</button>
           <button class="secondary" onclick="loadFluctuatingExample()">Load Fluctuating Example</button>
           <button class="secondary" onclick="resetForm()">Reset</button>
+          <button class="secondary" onclick="exportPDF()">Export PDF</button>
         </div>
 
         <div class="rule-box">
@@ -685,6 +820,89 @@
 
     <div class="footer">
       Demo page for research presentation and framework visualization
+    </div>
+  </div>
+
+  <!-- Hidden PDF report -->
+  <div id="pdfReport" class="pdf-report">
+    <div class="pdf-header">
+      <div class="pdf-title">Trajectory Analysis Based on a Macro–Micro Circulatory Framework</div>
+      <p class="pdf-subtitle">Research Report generated from serial VTI and PI measurements</p>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Derived Trajectory</h3>
+      <div class="pdf-grid">
+        <div class="pdf-box">
+          <div class="pdf-box-label">Trajectory phenotype</div>
+          <div class="pdf-box-value" id="pdfTrajectory">—</div>
+        </div>
+        <div class="pdf-box">
+          <div class="pdf-box-label">Framework-based risk tier</div>
+          <div class="pdf-box-value" id="pdfRisk">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Trajectory Features</h3>
+      <ul class="pdf-list" id="pdfFeatures">
+        <li>Baseline state: —</li>
+        <li>Final state: —</li>
+        <li>Bidirectional reversal: —</li>
+      </ul>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Serial Input Data</h3>
+      <table class="pdf-table">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>VTI (cm)</th>
+            <th>PI</th>
+            <th>Derived state</th>
+          </tr>
+        </thead>
+        <tbody id="pdfTableBody">
+          <tr><td colspan="4">No data</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Quadrant Plot</h3>
+      <div class="pdf-figure-wrap" id="pdfFigureWrap">
+        <svg id="pdfQuadrantPlot" viewBox="0 0 760 520" aria-label="PDF VTI-PI quadrant plot"></svg>
+      </div>
+      <div class="pdf-caption">
+        Figure. Serial macro–micro circulatory trajectory based on VTI and PI measurements.
+        Each point represents a time-specific state, and arrows indicate temporal transitions across predefined quadrants.
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Interpretation</h3>
+      <div class="pdf-note" id="pdfInterpretation">
+        —
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Methodological Note</h3>
+      <div class="pdf-note">
+        This report is generated using a rule-based trajectory classification framework based on
+        predefined VTI and PI thresholds. The trajectory phenotype is determined by baseline and
+        final states, overall severity trends, and the presence of bidirectional transitions.
+      </div>
+    </div>
+
+    <div class="pdf-section">
+      <h3>Disclaimer</h3>
+      <div class="pdf-disclaimer">
+        This report is intended for research and educational purposes only. It does not constitute
+        clinical decision support and should not be used for patient management.
+      </div>
     </div>
   </div>
 
@@ -835,7 +1053,8 @@
     function initializeRows() {
       const rows = DEFAULT_ROWS.map(item => createRow(item));
       renderRows(rows);
-      drawQuadrantPlot([]);
+      drawQuadrantPlot([], "quadrantPlot");
+      drawQuadrantPlot([], "pdfQuadrantPlot");
     }
 
     function addRow(prefill = { time: "", vti: "", pi: "" }) {
@@ -938,12 +1157,6 @@
       return highCount(states) > 0 && lowCount(states) > 0;
     }
 
-    function severityName(score) {
-      if (score === 0) return "high-flow";
-      if (score === 1) return "mismatch";
-      return "low-flow";
-    }
-
     function yesNo(value) {
       return value ? "Present" : "Absent";
     }
@@ -993,14 +1206,14 @@
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "The profile demonstrated bidirectional switching between more favorable and less favorable states, preventing a sustained directional classification."
+            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
         };
       } else if (reversalPresent && baselineSeverity !== finalSeverity) {
         result = {
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "Although the baseline and final states differed, the intermediate sequence showed directional reversal, favoring a fluctuating rather than a sustained improving or worsening interpretation."
+            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
         };
       } else if (finalSeverity < baselineSeverity && !reversalPresent) {
         result = {
@@ -1021,7 +1234,7 @@
           pattern: "Fluctuating trajectory",
           prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory returned to a similar severity level but displayed directional instability along the way, supporting a fluctuating pattern."
+            "The trajectory changed in both directions over time, indicating a fluctuating pattern."
         };
       } else if (baselineSeverity === 2 && finalSeverity === 2) {
         result = {
@@ -1044,14 +1257,6 @@
         final: getShortState(finalState),
         reversal: yesNo(reversalPresent)
       };
-
-      if (!reversalPresent && finalSeverity !== baselineSeverity) {
-        result.features.direction = finalSeverity < baselineSeverity ? "Improving" : "Worsening";
-      } else if (reversalPresent) {
-        result.features.direction = "Bidirectional";
-      } else {
-        result.features.direction = "Stable / indeterminate";
-      }
 
       return result;
     }
@@ -1110,7 +1315,7 @@
         `;
         document.getElementById("detailNote").textContent =
           "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored, and values must be non-negative.";
-        drawQuadrantPlot(points);
+        drawQuadrantPlot(points, "quadrantPlot");
         return;
       }
 
@@ -1127,7 +1332,7 @@
         `Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals. ` +
         `Framework-based risk labels are for research demonstration only.`;
 
-      drawQuadrantPlot(points);
+      drawQuadrantPlot(points, "quadrantPlot");
     }
 
     function analyzeIfPossible() {
@@ -1171,11 +1376,12 @@
       document.getElementById("detailNote").textContent =
         "This demo uses rule-based trajectory interpretation based on serial VTI and PI measurements.";
 
-      drawQuadrantPlot([]);
+      drawQuadrantPlot([], "quadrantPlot");
+      drawQuadrantPlot([], "pdfQuadrantPlot");
     }
 
-    function drawQuadrantPlot(points) {
-      const svg = document.getElementById("quadrantPlot");
+    function drawQuadrantPlot(points, svgId = "quadrantPlot") {
+      const svg = document.getElementById(svgId);
       const width = 760;
       const height = 520;
 
@@ -1196,7 +1402,7 @@
 
       let content = `
         <defs>
-          <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
+          <marker id="${svgId}-arrowHead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth">
             <path d="M0,0 L0,6 L9,3 z" fill="#64748b"></path>
           </marker>
         </defs>
@@ -1250,7 +1456,7 @@
               y2="${yScale(p2.pi)}"
               stroke="#64748b"
               stroke-width="2.5"
-              marker-end="url(#arrowHead)"
+              marker-end="url(#${svgId}-arrowHead)"
             ></line>
           `;
         }
@@ -1316,6 +1522,66 @@
       }
 
       return ticks;
+    }
+
+    function populatePDFReport() {
+      const points = getValidPointsFromDOM();
+      const trajectoryText = document.getElementById("trajectory").textContent.trim();
+      const predictionText = document.getElementById("prediction").textContent.trim();
+      const interpretationText = document.getElementById("interpretation").textContent.trim();
+
+      if (points.length < 2 || trajectoryText === "Awaiting input" || trajectoryText === "Insufficient serial data") {
+        alert("Please analyze at least two valid time points before exporting the PDF.");
+        return false;
+      }
+
+      const result = analyzeTrajectory(points);
+
+      document.getElementById("pdfTrajectory").textContent = result.pattern;
+      document.getElementById("pdfRisk").textContent = result.prediction;
+      document.getElementById("pdfInterpretation").textContent = interpretationText;
+
+      document.getElementById("pdfFeatures").innerHTML = `
+        <li>Baseline state: ${escapeHtml(result.features.baseline)}</li>
+        <li>Final state: ${escapeHtml(result.features.final)}</li>
+        <li>Bidirectional reversal: ${escapeHtml(result.features.reversal)}</li>
+      `;
+
+      const tableBody = document.getElementById("pdfTableBody");
+      tableBody.innerHTML = points.map(point => `
+        <tr>
+          <td>${escapeHtml(point.time)}</td>
+          <td>${point.vti.toFixed(1)}</td>
+          <td>${point.pi.toFixed(1)}</td>
+          <td>${escapeHtml(point.state)}</td>
+        </tr>
+      `).join("");
+
+      drawQuadrantPlot(points, "pdfQuadrantPlot");
+      return true;
+    }
+
+    async function exportPDF() {
+      const ok = populatePDFReport();
+      if (!ok) return;
+
+      const report = document.getElementById("pdfReport");
+      report.style.display = "block";
+
+      const opt = {
+        margin: [0.35, 0.35, 0.35, 0.35],
+        filename: "macro_micro_trajectory_research_report.pdf",
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: "#ffffff" },
+        jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
+        pagebreak: { mode: ["avoid-all", "css", "legacy"] }
+      };
+
+      try {
+        await html2pdf().set(opt).from(report).save();
+      } finally {
+        report.style.display = "none";
+      }
     }
 
     initializeRows();
