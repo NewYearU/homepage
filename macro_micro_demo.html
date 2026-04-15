@@ -478,62 +478,62 @@
       display: none;
       background: white;
       color: #111827;
-      padding: 24px 26px;
-      width: 760px;
+      padding: 18px 22px;
+      width: 740px;
       max-width: 100%;
       margin: 0 auto;
     }
 
     .pdf-header {
       border-bottom: 2px solid #dbe2ea;
-      padding-bottom: 12px;
-      margin-bottom: 18px;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
     .pdf-title {
-      font-size: 1.48rem;
+      font-size: 1.34rem;
       font-weight: 700;
       color: #183b62;
-      margin: 0 0 6px;
-      line-height: 1.3;
+      margin: 0 0 4px;
+      line-height: 1.28;
     }
 
     .pdf-subtitle {
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #6b7280;
-      margin: 0 0 4px;
+      margin: 0 0 2px;
     }
 
     .pdf-date {
-      font-size: 0.86rem;
+      font-size: 0.82rem;
       color: #6b7280;
       margin-top: 2px;
     }
 
     .pdf-section {
-      margin-top: 18px;
+      margin-top: 14px;
       break-inside: avoid;
       page-break-inside: avoid;
     }
 
     .pdf-section h3 {
-      margin: 0 0 8px;
+      margin: 0 0 7px;
       color: #183b62;
-      font-size: 1rem;
+      font-size: 0.98rem;
     }
 
     .pdf-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 10px;
     }
 
     .pdf-box {
       border: 1px solid #dbe2ea;
       border-radius: 10px;
-      padding: 12px 14px;
+      padding: 10px 12px;
       background: #fcfdff;
       break-inside: avoid;
       page-break-inside: avoid;
@@ -541,21 +541,21 @@
 
     .pdf-box-label {
       color: #6b7280;
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       margin-bottom: 4px;
     }
 
     .pdf-box-value {
       font-weight: 700;
       color: #1f2937;
-      font-size: 1rem;
+      font-size: 0.98rem;
     }
 
     .pdf-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 0.94rem;
+      margin-top: 6px;
+      font-size: 0.9rem;
       break-inside: avoid;
       page-break-inside: avoid;
     }
@@ -563,7 +563,7 @@
     .pdf-table th,
     .pdf-table td {
       border: 1px solid #dbe2ea;
-      padding: 8px 10px;
+      padding: 7px 9px;
       text-align: left;
       vertical-align: middle;
     }
@@ -575,8 +575,9 @@
     }
 
     .pdf-list {
-      margin: 6px 0 0;
+      margin: 4px 0 0;
       padding-left: 18px;
+      font-size: 0.92rem;
     }
 
     .pdf-list li {
@@ -586,30 +587,32 @@
     .pdf-figure-wrap {
       border: 1px solid #dbe2ea;
       border-radius: 12px;
-      padding: 12px;
+      padding: 10px;
       background: #ffffff;
-      margin-top: 8px;
+      margin-top: 6px;
       break-inside: avoid;
       page-break-inside: avoid;
+      overflow: hidden;
     }
 
     .pdf-figure-wrap svg {
       width: 100%;
       height: auto;
+      max-height: 420px;
     }
 
     .pdf-caption {
-      margin-top: 10px;
-      font-size: 0.87rem;
+      margin-top: 8px;
+      font-size: 0.83rem;
       color: #4b5563;
-      line-height: 1.5;
+      line-height: 1.45;
     }
 
     .pdf-note,
     .pdf-disclaimer {
       border-radius: 10px;
-      padding: 12px 14px;
-      font-size: 0.92rem;
+      padding: 10px 12px;
+      font-size: 0.88rem;
       break-inside: avoid;
       page-break-inside: avoid;
     }
@@ -630,7 +633,7 @@
       display: inline-block;
       padding: 4px 8px;
       border-radius: 999px;
-      font-size: 0.82rem;
+      font-size: 0.8rem;
       font-weight: 700;
       line-height: 1.2;
       border: 1px solid transparent;
@@ -879,7 +882,6 @@
     </div>
   </div>
 
-  <!-- Hidden PDF report -->
   <div id="pdfReport" class="pdf-report">
     <div class="pdf-header">
       <div class="pdf-title">Trajectory Analysis Based on a Macro–Micro Circulatory Framework</div>
@@ -930,13 +932,13 @@
     <div class="pdf-section">
       <h3>Quadrant Plot</h3>
       <div class="pdf-figure-wrap" id="pdfFigureWrap">
-        <svg id="pdfQuadrantPlot" viewBox="0 0 760 520" aria-label="PDF VTI-PI quadrant plot"></svg>
+        <svg id="pdfQuadrantPlot" viewBox="0 0 760 430" aria-label="PDF VTI-PI quadrant plot"></svg>
       </div>
       <div class="pdf-caption">
-        <strong>Figure 1.</strong> Serial macro–micro circulatory trajectory projected onto the predefined VTI–PI state space. 
+        <strong>Figure 1.</strong> Serial macro–micro circulatory trajectory projected onto the predefined VTI–PI state space.
         Each point represents a time-specific observation, and arrows indicate temporal transitions. The four quadrants correspond
-        to concordant high-flow, macro-predominant mismatch, micro-predominant mismatch, and concordant low-flow states
-        defined by fixed VTI and PI thresholds.
+        to concordant high-flow, macro-predominant mismatch, micro-predominant mismatch, and concordant low-flow states defined
+        by fixed VTI and PI thresholds.
       </div>
     </div>
 
@@ -1457,10 +1459,15 @@
 
     function drawQuadrantPlot(points, svgId = "quadrantPlot") {
       const svg = document.getElementById(svgId);
-      const width = 760;
-      const height = 520;
+      const isPDF = svgId === "pdfQuadrantPlot";
 
-      const margin = { top: 36, right: 28, bottom: 58, left: 72 };
+      const width = 760;
+      const height = isPDF ? 430 : 520;
+
+      const margin = isPDF
+        ? { top: 28, right: 24, bottom: 50, left: 62 }
+        : { top: 36, right: 28, bottom: 58, left: 72 };
+
       const plotW = width - margin.left - margin.right;
       const plotH = height - margin.top - margin.bottom;
 
@@ -1474,6 +1481,15 @@
 
       const cutX = xScale(VTI_CUTOFF);
       const cutY = yScale(PI_CUTOFF);
+
+      const titleFont = isPDF ? 12 : 15;
+      const axisFont = isPDF ? 13 : 15;
+      const tickFont = isPDF ? 11 : 12;
+      const pointLabelFont = isPDF ? 12 : 13;
+      const pointValueFont = isPDF ? 11 : 12;
+      const pointRadius = isPDF ? 7 : 8;
+
+      svg.setAttribute("viewBox", `0 0 ${width} ${height}`);
 
       let content = `
         <defs>
@@ -1495,28 +1511,28 @@
         <line x1="${cutX}" y1="${margin.top}" x2="${cutX}" y2="${height - margin.bottom}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
         <line x1="${margin.left}" y1="${cutY}" x2="${width - margin.right}" y2="${cutY}" stroke="#1f4e79" stroke-width="2" stroke-dasharray="8 6"></line>
 
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#16a34a" font-weight="700">
-          Concordant high-flow
-        </text>
-        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 26}" text-anchor="middle" font-size="15" fill="#ca8a04" font-weight="700">
+        <text x="${(margin.left + cutX) / 2}" y="${margin.top + 22}" text-anchor="middle" font-size="${titleFont}" fill="#ca8a04" font-weight="700">
           Macro-predominant mismatch
         </text>
-        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#ea580c" font-weight="700">
-          Micro-predominant mismatch
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${margin.top + 22}" text-anchor="middle" font-size="${titleFont}" fill="#16a34a" font-weight="700">
+          Concordant high-flow
         </text>
-        <text x="${(margin.left + cutX) / 2}" y="${cutY + 28}" text-anchor="middle" font-size="15" fill="#dc2626" font-weight="700">
+        <text x="${(margin.left + cutX) / 2}" y="${cutY + 24}" text-anchor="middle" font-size="${titleFont}" fill="#dc2626" font-weight="700">
           Concordant low-flow
         </text>
+        <text x="${(cutX + (width - margin.right)) / 2}" y="${cutY + 24}" text-anchor="middle" font-size="${titleFont}" fill="#ea580c" font-weight="700">
+          Micro-predominant mismatch
+        </text>
 
-        <text x="${margin.left + plotW / 2}" y="${height - 16}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600">
+        <text x="${margin.left + plotW / 2}" y="${height - 14}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600">
           VTI (cm)
         </text>
-        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#334155" font-weight="600"
+        <text x="18" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="${axisFont}" fill="#334155" font-weight="600"
               transform="rotate(-90, 18, ${margin.top + plotH / 2})">
           PI
         </text>
 
-        ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
+        ${drawTicksCustom(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height, tickFont)}
       `;
 
       if (points.length > 0) {
@@ -1541,18 +1557,18 @@
           const cy = yScale(p.pi);
           const color = getColor(p.state);
           content += `
-            <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
-            <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
+            <circle cx="${cx}" cy="${cy}" r="${pointRadius}" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
+            <text x="${cx + 10}" y="${cy - 10}" font-size="${pointLabelFont}" fill="${color}" font-weight="700">
               ${escapeHtml(p.time)}
             </text>
-            <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
+            <text x="${cx + 10}" y="${cy + 7}" font-size="${pointValueFont}" fill="#475569">
               (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
             </text>
           `;
         });
       } else {
         content += `
-          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
+          <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="15" fill="#94a3b8">
             Enter serial VTI and PI values to display the trajectory
           </text>
         `;
@@ -1577,14 +1593,14 @@
       return lines;
     }
 
-    function drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height) {
+    function drawTicksCustom(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height, tickFont) {
       let ticks = "";
 
       for (let x = xMin; x <= xMax; x += 2) {
         const px = xScale(x);
         ticks += `
           <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
-          <text x="${px}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="12" fill="#475569">${x}</text>
+          <text x="${px}" y="${height - margin.bottom + 20}" text-anchor="middle" font-size="${tickFont}" fill="#475569">${x}</text>
         `;
       }
 
@@ -1592,7 +1608,7 @@
         const py = yScale(y);
         ticks += `
           <line x1="${margin.left - 6}" y1="${py}" x2="${margin.left}" y2="${py}" stroke="#334155" stroke-width="1"></line>
-          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="12" fill="#475569">${y.toFixed(1)}</text>
+          <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="${tickFont}" fill="#475569">${y.toFixed(1)}</text>
         `;
       }
 
@@ -1654,7 +1670,7 @@
       window.scrollTo(0, 0);
 
       const opt = {
-        margin: [0.45, 0.45, 0.45, 0.45],
+        margin: [0.3, 0.3, 0.3, 0.3],
         filename: "macro_micro_trajectory_research_report.pdf",
         image: { type: "jpeg", quality: 0.98 },
         html2canvas: {
@@ -1669,7 +1685,8 @@
           orientation: "portrait"
         },
         pagebreak: {
-          mode: ["css", "legacy"]
+          mode: ["css", "legacy"],
+          avoid: [".pdf-figure-wrap", ".pdf-box", ".pdf-note", ".pdf-disclaimer", ".pdf-table"]
         }
       };
 
