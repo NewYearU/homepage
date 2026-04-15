@@ -782,13 +782,13 @@
         const chipLabel = hasBoth ? getShortState(state) : "Awaiting values";
         const canDelete = rowsData.length > 2;
 
-        tr.innerHTML = 
+        tr.innerHTML = `
           <td>
             <input
               type="text"
               class="time-field time-input"
               placeholder="e.g. Day 1 / 6h / 12h"
-              value="${escapeHtml(row.time || Time ${index + 1})}"
+              value="${escapeHtml(row.time || `Time ${index + 1}`)}"
               oninput="updateRowState(this)"
             />
           </td>
@@ -820,11 +820,11 @@
           <td>
             ${
               canDelete
-                ? <button class="danger-lite" type="button" onclick="removeRow(${row.id})">Remove</button>
-                : <span class="small">Minimum 2 rows</span>
+                ? `<button class="danger-lite" type="button" onclick="removeRow(${row.id})">Remove</button>`
+                : `<span class="small">Minimum 2 rows</span>`
             }
           </td>
-        ;
+        `;
 
         tbody.appendChild(tr);
       });
@@ -842,7 +842,7 @@
       const rows = getAllRowsDataFromDOM();
       const nextLabel = prefill.time && String(prefill.time).trim()
         ? prefill.time
-        : Day ${rows.length + 1};
+        : `Day ${rows.length + 1}`;
 
       rows.push(createRow({
         time: nextLabel,
@@ -887,7 +887,7 @@
       }
 
       const state = getState(vtiValue, piValue);
-      chip.className = state-chip ${getChipClass(state)};
+      chip.className = `state-chip ${getChipClass(state)}`;
       chip.textContent = getShortState(state);
     }
 
@@ -1061,7 +1061,7 @@
 
       return rows
         .map((row, index) => {
-          const time = String(row.time || "").trim() || Time ${index + 1};
+          const time = String(row.time || "").trim() || `Time ${index + 1}`;
           const vti = parseFloat(row.vti);
           const pi = parseFloat(row.pi);
 
@@ -1081,16 +1081,16 @@
 
     function formatDailyStates(points) {
       return points.map(point => {
-        return <strong>${escapeHtml(point.time)}:</strong> ${escapeHtml(point.state)} <span style="color:#64748b;">(${point.vti.toFixed(1)}, ${point.pi.toFixed(1)})</span>;
+        return `<strong>${escapeHtml(point.time)}:</strong> ${escapeHtml(point.state)} <span style="color:#64748b;">(${point.vti.toFixed(1)}, ${point.pi.toFixed(1)})</span>`;
       }).join("<br>");
     }
 
     function renderTrajectoryFeatures(features) {
-      return 
+      return `
         <li>Baseline: ${escapeHtml(features.baseline)}</li>
         <li>Final: ${escapeHtml(features.final)}</li>
         <li>Reversal: ${escapeHtml(features.reversal)}</li>
-      ;
+      `;
     }
 
     function analyzePattern() {
@@ -1103,11 +1103,11 @@
         document.getElementById("prediction").textContent = "Insufficient serial data";
         document.getElementById("interpretation").textContent =
           "Trajectory interpretation requires at least two time points with both VTI and PI.";
-        document.getElementById("trajectoryFeatures").innerHTML = 
+        document.getElementById("trajectoryFeatures").innerHTML = `
           <li>Baseline: —</li>
           <li>Final: —</li>
           <li>Reversal: —</li>
-        ;
+        `;
         document.getElementById("detailNote").textContent =
           "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored, and values must be non-negative.";
         drawQuadrantPlot(points);
@@ -1123,9 +1123,9 @@
       document.getElementById("trajectoryFeatures").innerHTML = renderTrajectoryFeatures(result.features);
 
       document.getElementById("detailNote").textContent =
-        Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}.  +
-        Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals.  +
-        Framework-based risk labels are for research demonstration only.;
+        `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
+        `Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals. ` +
+        `Framework-based risk labels are for research demonstration only.`;
 
       drawQuadrantPlot(points);
     }
@@ -1163,11 +1163,11 @@
       document.getElementById("prediction").textContent = "Awaiting input";
       document.getElementById("interpretation").textContent =
         "Enter serial VTI and PI values and click “Analyze Pattern”.";
-      document.getElementById("trajectoryFeatures").innerHTML = 
+      document.getElementById("trajectoryFeatures").innerHTML = `
         <li>Baseline: —</li>
         <li>Final: —</li>
         <li>Reversal: —</li>
-      ;
+      `;
       document.getElementById("detailNote").textContent =
         "This demo uses rule-based trajectory interpretation based on serial VTI and PI measurements.";
 
@@ -1242,7 +1242,7 @@
         for (let i = 0; i < points.length - 1; i++) {
           const p1 = points[i];
           const p2 = points[i + 1];
-          content += 
+          content += `
             <line
               x1="${xScale(p1.vti)}"
               y1="${yScale(p1.pi)}"
@@ -1252,14 +1252,14 @@
               stroke-width="2.5"
               marker-end="url(#arrowHead)"
             ></line>
-          ;
+          `;
         }
 
         points.forEach((p) => {
           const cx = xScale(p.vti);
           const cy = yScale(p.pi);
           const color = getColor(p.state);
-          content += 
+          content += `
             <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
             <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
               ${escapeHtml(p.time)}
@@ -1267,14 +1267,14 @@
             <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
               (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
             </text>
-          ;
+          `;
         });
       } else {
-        content += 
+        content += `
           <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
             Enter serial VTI and PI values to display the trajectory
           </text>
-        ;
+        `;
       }
 
       svg.innerHTML = content;
@@ -1285,12 +1285,12 @@
 
       for (let x = xMin; x <= xMax; x += 2) {
         const px = xScale(x);
-        lines += <line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>;
+        lines += `<line x1="${px}" y1="${margin.top}" x2="${px}" y2="${height - margin.bottom}" stroke="#e5e7eb" stroke-width="1"></line>`;
       }
 
       for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
         const py = yScale(y);
-        lines += <line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>;
+        lines += `<line x1="${margin.left}" y1="${py}" x2="${width - margin.right}" y2="${py}" stroke="#e5e7eb" stroke-width="1"></line>`;
       }
 
       return lines;
@@ -1301,18 +1301,18 @@
 
       for (let x = xMin; x <= xMax; x += 2) {
         const px = xScale(x);
-        ticks += 
+        ticks += `
           <line x1="${px}" y1="${height - margin.bottom}" x2="${px}" y2="${height - margin.bottom + 6}" stroke="#334155" stroke-width="1"></line>
           <text x="${px}" y="${height - margin.bottom + 22}" text-anchor="middle" font-size="12" fill="#475569">${x}</text>
-        ;
+        `;
       }
 
       for (let y = yMin; y <= yMax + 0.0001; y += 0.2) {
         const py = yScale(y);
-        ticks += 
+        ticks += `
           <line x1="${margin.left - 6}" y1="${py}" x2="${margin.left}" y2="${py}" stroke="#334155" stroke-width="1"></line>
           <text x="${margin.left - 10}" y="${py + 4}" text-anchor="end" font-size="12" fill="#475569">${y.toFixed(1)}</text>
-        ;
+        `;
       }
 
       return ticks;
