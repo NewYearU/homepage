@@ -16,6 +16,18 @@
       --danger: #8b1e1e;
       --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
       --radius: 16px;
+      --green-bg: #dcfce7;
+      --green-line: #86efac;
+      --green-text: #166534;
+      --yellow-bg: #fef9c3;
+      --yellow-line: #fde047;
+      --yellow-text: #854d0e;
+      --orange-bg: #fed7aa;
+      --orange-line: #fdba74;
+      --orange-text: #9a3412;
+      --red-bg: #fee2e2;
+      --red-line: #fca5a5;
+      --red-text: #991b1b;
     }
 
     * {
@@ -31,7 +43,7 @@
     }
 
     .container {
-      max-width: 1180px;
+      max-width: 1240px;
       margin: 40px auto;
       padding: 0 20px 48px;
     }
@@ -60,7 +72,7 @@
 
     .grid {
       display: grid;
-      grid-template-columns: 0.95fr 1.05fr;
+      grid-template-columns: 0.98fr 1.02fr;
       gap: 24px;
     }
 
@@ -104,27 +116,27 @@
     }
 
     .state-high {
-      background: #dcfce7;
-      border-color: #86efac;
-      color: #166534;
+      background: var(--green-bg);
+      border-color: var(--green-line);
+      color: var(--green-text);
     }
 
     .state-macro {
-      background: #fef9c3;
-      border-color: #fde047;
-      color: #854d0e;
+      background: var(--yellow-bg);
+      border-color: var(--yellow-line);
+      color: var(--yellow-text);
     }
 
     .state-micro {
-      background: #fed7aa;
-      border-color: #fdba74;
-      color: #9a3412;
+      background: var(--orange-bg);
+      border-color: var(--orange-line);
+      color: var(--orange-text);
     }
 
     .state-low {
-      background: #fee2e2;
-      border-color: #fca5a5;
-      color: #991b1b;
+      background: var(--red-bg);
+      border-color: var(--red-line);
+      color: var(--red-text);
     }
 
     .table-wrap {
@@ -135,7 +147,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 420px;
+      min-width: 640px;
     }
 
     th, td {
@@ -151,19 +163,66 @@
       font-size: 0.95rem;
     }
 
-    input[type="number"] {
+    input[type="number"],
+    input[type="text"] {
       width: 100%;
       padding: 10px 12px;
       border: 1px solid #cdd6e1;
       border-radius: 10px;
-      font-size: 0.98rem;
+      font-size: 0.96rem;
       background: #fff;
     }
 
-    input[type="number"]:focus {
+    input[type="number"]:focus,
+    input[type="text"]:focus {
       outline: none;
       border-color: #7aa7cf;
       box-shadow: 0 0 0 4px rgba(31, 78, 121, 0.08);
+    }
+
+    .time-input {
+      min-width: 110px;
+    }
+
+    .state-chip {
+      display: inline-block;
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      line-height: 1.2;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .chip-empty {
+      background: #f3f4f6;
+      color: #6b7280;
+      border-color: #e5e7eb;
+    }
+
+    .chip-high {
+      background: var(--green-bg);
+      color: var(--green-text);
+      border-color: var(--green-line);
+    }
+
+    .chip-macro {
+      background: var(--yellow-bg);
+      color: var(--yellow-text);
+      border-color: var(--yellow-line);
+    }
+
+    .chip-micro {
+      background: var(--orange-bg);
+      color: var(--orange-text);
+      border-color: var(--orange-line);
+    }
+
+    .chip-low {
+      background: var(--red-bg);
+      color: var(--red-text);
+      border-color: var(--red-line);
     }
 
     .btn-row {
@@ -196,6 +255,21 @@
     .secondary {
       background: #e9eef4;
       color: #334155;
+    }
+
+    .danger-lite {
+      background: #fff1f2;
+      color: #9f1239;
+      border: 1px solid #fecdd3;
+      padding: 8px 12px;
+      font-size: 0.88rem;
+      border-radius: 10px;
+    }
+
+    .danger-lite:hover {
+      transform: none;
+      opacity: 1;
+      background: #ffe4e6;
     }
 
     .result-item {
@@ -351,6 +425,21 @@
       text-decoration: underline;
     }
 
+    .rule-box {
+      margin-top: 12px;
+      padding: 14px 16px;
+      border-radius: 12px;
+      border: 1px solid #dbe7f2;
+      background: #f8fbfe;
+      color: #4b5563;
+      font-size: 0.92rem;
+    }
+
+    .inline-strong {
+      font-weight: 700;
+      color: var(--accent);
+    }
+
     @media (max-width: 980px) {
       .grid {
         grid-template-columns: 1fr;
@@ -372,6 +461,10 @@
       h1 {
         font-size: 1.65rem;
       }
+
+      table {
+        min-width: 560px;
+      }
     }
   </style>
 </head>
@@ -380,7 +473,7 @@
     <section class="hero">
       <h1>Macro–Micro Circulatory Prognostic Tool (Demo)</h1>
       <p class="subtitle">
-        Based on a time-dependent integration of VTI and PI during the first 3 ICU days
+        Interactive trajectory interpretation based on serial VTI and PI measurements
       </p>
     </section>
 
@@ -391,7 +484,8 @@
           Macrocirculatory flow and microcirculatory perfusion are related but not interchangeable.
           In this framework, left ventricular outflow tract velocity–time integral (VTI) is used as a
           surrogate of global flow, whereas perfusion index (PI) reflects peripheral perfusion.
-          Their contemporaneous combination defines four macro–micro circulatory states.
+          Their contemporaneous combination defines four macro–micro circulatory states. Serial
+          state transitions are then summarized into a trajectory phenotype.
         </p>
 
         <h2>State Definitions</h2>
@@ -401,41 +495,40 @@
         <div class="state-box state-low"><strong>Concordant low-flow:</strong> VTI &lt; 16.9 and PI &lt; 1.2</div>
 
         <h2>Input</h2>
-        <p class="small">Enter VTI and PI values for the first 3 ICU days.</p>
+        <p class="small">
+          Default labels are Day 1, Day 2, and Day 3. You may edit the time labels, add additional
+          time points, or remove rows as needed.
+        </p>
 
         <div class="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Day</th>
-                <th>VTI (cm)</th>
-                <th>PI</th>
+                <th style="width: 22%;">Time</th>
+                <th style="width: 20%;">VTI (cm)</th>
+                <th style="width: 20%;">PI</th>
+                <th style="width: 26%;">Auto state</th>
+                <th style="width: 12%;">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>Day 1</td>
-                <td><input type="number" id="vti1" step="0.1" placeholder="e.g. 15.8" /></td>
-                <td><input type="number" id="pi1" step="0.1" placeholder="e.g. 1.4" /></td>
-              </tr>
-              <tr>
-                <td>Day 2</td>
-                <td><input type="number" id="vti2" step="0.1" placeholder="e.g. 17.2" /></td>
-                <td><input type="number" id="pi2" step="0.1" placeholder="e.g. 1.1" /></td>
-              </tr>
-              <tr>
-                <td>Day 3</td>
-                <td><input type="number" id="vti3" step="0.1" placeholder="e.g. 18.0" /></td>
-                <td><input type="number" id="pi3" step="0.1" placeholder="e.g. 1.5" /></td>
-              </tr>
-            </tbody>
+            <tbody id="inputRows"></tbody>
           </table>
         </div>
 
         <div class="btn-row">
           <button class="primary" onclick="analyzePattern()">Analyze Pattern</button>
+          <button class="secondary" onclick="addRow()">Add Time Point</button>
           <button class="secondary" onclick="fillExample()">Load Example</button>
+          <button class="secondary" onclick="loadFluctuatingExample()">Load Fluctuating Example</button>
           <button class="secondary" onclick="resetForm()">Reset</button>
+        </div>
+
+        <div class="rule-box">
+          <span class="inline-strong">Trajectory logic:</span>
+          Favorable trajectory requires persistent concordant high-flow without concordant low-flow.
+          Improving trajectory reflects an overall shift toward lower severity.
+          Worsening trajectory reflects an overall shift toward higher severity or persistent concordant low-flow.
+          Fluctuating trajectory is assigned when bidirectional switching prevents a sustained directional interpretation.
         </div>
       </section>
 
@@ -443,24 +536,31 @@
         <h2>Results</h2>
 
         <div class="result-item">
-          <div class="label">Day-by-day state classification</div>
+          <div class="label">Time-point state classification</div>
           <div class="value" id="dailyStates">No analysis yet.</div>
         </div>
 
         <div class="result-item">
-          <div class="label">Trajectory pattern</div>
+          <div class="label">Trajectory phenotype</div>
           <div class="trajectory" id="trajectory">Awaiting input</div>
         </div>
 
         <div class="result-item">
-          <div class="label">Predicted risk</div>
+          <div class="label">Framework-based risk tier</div>
           <div class="value" id="prediction">Awaiting input</div>
         </div>
 
         <div class="result-item">
           <div class="label">Interpretation</div>
           <div class="value" id="interpretation" style="font-weight: 500;">
-            Enter data and click “Analyze Pattern”.
+            Enter serial VTI and PI values and click “Analyze Pattern”.
+          </div>
+        </div>
+
+        <div class="result-item">
+          <div class="label">Decision summary</div>
+          <div class="value" id="decisionSummary" style="font-weight: 500;">
+            The tool will summarize baseline state, final state, directionality, and reversals.
           </div>
         </div>
 
@@ -477,12 +577,12 @@
         </div>
 
         <div class="quad-note">
-          Color gradient reflects increasing macro–micro severity.
-          Vertical cutoff: VTI = 16.9 cm. Horizontal cutoff: PI = 1.2.
+          Quadrants are defined using fixed framework cutoffs. The plot visualizes serial movement across
+          macro–micro circulatory states over time.
         </div>
 
         <div class="note" id="detailNote">
-          This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.
+          This demo uses rule-based trajectory interpretation based on serial VTI and PI measurements.
         </div>
 
         <div class="disclaimer">
@@ -495,15 +595,15 @@
       <h2>Research and Use Information</h2>
 
       <div class="meta-grid">
-       <div class="meta-item">
-  <div class="meta-title">Version</div>
-  <div class="meta-text">
-    <strong>Current version</strong><br>
-    This page always reflects the latest version of the tool.<br><br>
-    Archived version:<br>
-    <a href="macro_micro_v1.html">v1.0 (2026-04)</a>
-  </div>
-</div>
+        <div class="meta-item">
+          <div class="meta-title">Version</div>
+          <div class="meta-text">
+            <strong>Current version</strong><br>
+            This page reflects the latest trajectory-enabled version of the demo.<br><br>
+            Archived version:<br>
+            <a href="macro_micro_v1.html">v1.0 (2026-04)</a>
+          </div>
+        </div>
 
         <div class="meta-item">
           <div class="meta-title">Disclaimer</div>
@@ -516,16 +616,17 @@
         <div class="meta-item">
           <div class="meta-title">Data Privacy</div>
           <div class="meta-text">
-            No input data are stored, transmitted, or shared.
-            All calculations are performed locally in the user's browser.
+            No input data are stored, transmitted, or shared. All calculations are performed locally
+            in the user's browser.
           </div>
         </div>
 
         <div class="meta-item">
           <div class="meta-title">Methodological Note</div>
           <div class="meta-text">
-            The classification and trajectory rules are based on a conceptual macro–micro circulatory framework
-            and are intended for demonstration purposes.
+            State classification is based on predefined VTI and PI cutoffs. Trajectory classification
+            is determined by overall direction, dominant severity pattern, and the presence or absence
+            of bidirectional reversals.
           </div>
         </div>
 
@@ -557,6 +658,13 @@
   <script>
     const VTI_CUTOFF = 16.9;
     const PI_CUTOFF = 1.2;
+    const DEFAULT_ROWS = [
+      { time: "Day 1", vti: "", pi: "" },
+      { time: "Day 2", vti: "", pi: "" },
+      { time: "Day 3", vti: "", pi: "" }
+    ];
+
+    let rowCounter = 0;
 
     function getState(vti, pi) {
       if (vti >= VTI_CUTOFF && pi >= PI_CUTOFF) {
@@ -573,143 +681,472 @@
 
     function getColor(state) {
       if (state === "Concordant high-flow") return "#16a34a";
-      if (state === "Macro-predominant mismatch") return "#fde047";
+      if (state === "Macro-predominant mismatch") return "#eab308";
       if (state === "Micro-predominant mismatch") return "#f97316";
       return "#dc2626";
     }
 
-    function stateGroup(state) {
-      if (state === "Concordant high-flow") return "high";
-      if (state === "Concordant low-flow") return "low";
-      return "mismatch";
+    function getChipClass(state) {
+      if (state === "Concordant high-flow") return "chip-high";
+      if (state === "Macro-predominant mismatch") return "chip-macro";
+      if (state === "Micro-predominant mismatch") return "chip-micro";
+      if (state === "Concordant low-flow") return "chip-low";
+      return "chip-empty";
     }
 
-    function analyzeTrajectory(states) {
-      const groups = states.map(stateGroup);
-      const [g1, g2, g3] = groups;
+    function stateToSeverity(state) {
+      if (state === "Concordant high-flow") return 0;
+      if (state === "Concordant low-flow") return 2;
+      return 1;
+    }
 
-      if (g1 === "high" && g2 === "high" && g3 === "high") {
+    function escapeHtml(str) {
+      return String(str)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+    }
+
+    function createRow(data = { time: "", vti: "", pi: "" }) {
+      rowCounter += 1;
+      return {
+        id: rowCounter,
+        time: data.time ?? "",
+        vti: data.vti ?? "",
+        pi: data.pi ?? ""
+      };
+    }
+
+    function getAllRowsDataFromDOM() {
+      const tbody = document.getElementById("inputRows");
+      const trs = Array.from(tbody.querySelectorAll("tr"));
+      return trs.map(tr => {
+        const id = Number(tr.dataset.rowId);
+        const time = tr.querySelector(".time-field")?.value ?? "";
+        const vti = tr.querySelector(".vti-field")?.value ?? "";
+        const pi = tr.querySelector(".pi-field")?.value ?? "";
+        return { id, time, vti, pi };
+      });
+    }
+
+    function renderRows(rowsData) {
+      const tbody = document.getElementById("inputRows");
+      tbody.innerHTML = "";
+
+      rowsData.forEach((row, index) => {
+        const tr = document.createElement("tr");
+        tr.dataset.rowId = String(row.id);
+
+        const parsedVti = parseFloat(row.vti);
+        const parsedPi = parseFloat(row.pi);
+        const hasBoth = !Number.isNaN(parsedVti) && !Number.isNaN(parsedPi);
+        const state = hasBoth ? getState(parsedVti, parsedPi) : "";
+        const chipClass = hasBoth ? getChipClass(state) : "chip-empty";
+        const chipLabel = hasBoth ? state : "Awaiting values";
+
+        const canDelete = rowsData.length > 2;
+
+        tr.innerHTML = `
+          <td>
+            <input
+              type="text"
+              class="time-field time-input"
+              placeholder="e.g. Day 1 / 6h / 12h"
+              value="${escapeHtml(row.time || `Time ${index + 1}`)}"
+              oninput="updateAutoStates()"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              class="vti-field"
+              step="0.1"
+              placeholder="e.g. 15.8"
+              value="${escapeHtml(row.vti)}"
+              oninput="updateAutoStates()"
+            />
+          </td>
+          <td>
+            <input
+              type="number"
+              class="pi-field"
+              step="0.1"
+              placeholder="e.g. 1.4"
+              value="${escapeHtml(row.pi)}"
+              oninput="updateAutoStates()"
+            />
+          </td>
+          <td>
+            <span class="state-chip ${chipClass}">${escapeHtml(chipLabel)}</span>
+          </td>
+          <td>
+            ${
+              canDelete
+                ? `<button class="danger-lite" type="button" onclick="removeRow(${row.id})">Remove</button>`
+                : `<span class="small">Minimum 2 rows</span>`
+            }
+          </td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    function initializeRows() {
+      const rows = DEFAULT_ROWS.map(item => createRow(item));
+      renderRows(rows);
+      drawQuadrantPlot([]);
+    }
+
+    function addRow(prefill = { time: "", vti: "", pi: "" }) {
+      const rows = getAllRowsDataFromDOM();
+      const nextLabel = prefill.time && String(prefill.time).trim()
+        ? prefill.time
+        : `Day ${rows.length + 1}`;
+
+      rows.push(createRow({
+        time: nextLabel,
+        vti: prefill.vti ?? "",
+        pi: prefill.pi ?? ""
+      }));
+      renderRows(rows);
+    }
+
+    function removeRow(id) {
+      const rows = getAllRowsDataFromDOM();
+      if (rows.length <= 2) return;
+      const filtered = rows.filter(row => row.id !== id);
+      renderRows(filtered);
+      updateAutoStates();
+    }
+
+    function updateAutoStates() {
+      const rows = getAllRowsDataFromDOM();
+      renderRows(rows);
+    }
+
+    function countDirectionalReversals(severities) {
+      let reversals = 0;
+      let previousDirection = 0;
+
+      for (let i = 1; i < severities.length; i++) {
+        const diff = severities[i] - severities[i - 1];
+        const direction = diff === 0 ? 0 : (diff > 0 ? 1 : -1);
+
+        if (direction !== 0) {
+          if (previousDirection !== 0 && direction !== previousDirection) {
+            reversals += 1;
+          }
+          previousDirection = direction;
+        }
+      }
+
+      return reversals;
+    }
+
+    function isAllHigh(states) {
+      return states.every(state => state === "Concordant high-flow");
+    }
+
+    function isAllLow(states) {
+      return states.every(state => state === "Concordant low-flow");
+    }
+
+    function hasAnyLow(states) {
+      return states.some(state => state === "Concordant low-flow");
+    }
+
+    function highCount(states) {
+      return states.filter(state => state === "Concordant high-flow").length;
+    }
+
+    function lowCount(states) {
+      return states.filter(state => state === "Concordant low-flow").length;
+    }
+
+    function hasBothHighAndLow(states) {
+      return highCount(states) > 0 && lowCount(states) > 0;
+    }
+
+    function severityName(score) {
+      if (score === 0) return "concordant high-flow";
+      if (score === 1) return "mismatch state";
+      return "concordant low-flow";
+    }
+
+    function analyzeTrajectory(points) {
+      const states = points.map(p => p.state);
+      const times = points.map(p => p.time);
+      const severities = states.map(stateToSeverity);
+      const baselineSeverity = severities[0];
+      const finalSeverity = severities[severities.length - 1];
+      const reversals = countDirectionalReversals(severities);
+      const baselineState = states[0];
+      const finalState = states[states.length - 1];
+
+      const highProportion = highCount(states) / states.length;
+      const lowProportion = lowCount(states) / states.length;
+
+      if (
+        baselineState === "Concordant high-flow" &&
+        finalState === "Concordant high-flow" &&
+        highProportion >= 2 / 3 &&
+        !hasAnyLow(states)
+      ) {
         return {
-          pattern: "Stable favorable pattern",
-          prediction: "Lower predicted risk",
+          pattern: "Favorable trajectory",
+          prediction: "Lower framework-based risk",
           interpretation:
-            "All three time points remained within the concordant high-flow state, suggesting a favorable macro–micro circulatory profile."
+            "The serial profile remained predominantly within concordant high-flow without concordant low-flow, supporting a favorable macro–micro circulatory trajectory.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. High-flow predominance maintained (${Math.round(highProportion * 100)}% of time points) without concordant low-flow.`,
+          logic:
+            "Favorable trajectory was assigned because the profile remained predominantly high-flow and did not enter concordant low-flow."
         };
       }
 
-      if (g1 === "low" && g2 === "low" && g3 === "low") {
+      if (
+        isAllLow(states) ||
+        (baselineState === "Concordant low-flow" && finalState === "Concordant low-flow")
+      ) {
         return {
-          pattern: "Persistent low-flow pattern",
-          prediction: "Higher predicted risk",
+          pattern: "Worsening trajectory",
+          prediction: "Higher framework-based risk",
           interpretation:
-            "All three time points remained within the concordant low-flow state, indicating severe hemodynamic impairment."
+            "Persistent concordant low-flow indicates sustained severe macro–micro circulatory dysfunction and a high-risk hemodynamic profile.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Concordant low-flow persisted across serial assessments.`,
+          logic:
+            "Worsening trajectory was assigned because persistent concordant low-flow is treated as a sustained unfavorable trajectory."
         };
       }
 
-      if ((g1 === "low" || g1 === "mismatch") && g3 === "high") {
+      if (reversals >= 1 && hasBothHighAndLow(states)) {
         return {
-          pattern: "Improving pattern",
-          prediction: "Lower-to-intermediate predicted risk",
+          pattern: "Fluctuating trajectory",
+          prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory evolved toward concordant high-flow, suggesting recovery of macro–micro coherence."
+            "The profile demonstrated bidirectional switching between more favorable and less favorable states, preventing a sustained directional classification.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Bidirectional reversal detected with both concordant high-flow and concordant low-flow represented.`,
+          logic:
+            "Fluctuating trajectory was assigned because the sequence crossed between high-flow and low-flow with directional reversal."
         };
       }
 
-      if (g1 === "high" && (g3 === "low" || g3 === "mismatch")) {
+      if (reversals >= 1 && baselineSeverity !== finalSeverity) {
         return {
-          pattern: "Worsening pattern",
-          prediction: "Intermediate-to-higher predicted risk",
+          pattern: "Fluctuating trajectory",
+          prediction: "Intermediate framework-based risk",
           interpretation:
-            "The trajectory deteriorated away from concordant high-flow, suggesting worsening hemodynamic status."
+            "Although the baseline and final states differed, the intermediate sequence showed directional reversal, favoring a fluctuating rather than a sustained improving or worsening interpretation.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Reversal count: ${reversals}.`,
+          logic:
+            "Fluctuating trajectory was assigned because net change was interrupted by bidirectional movement."
         };
       }
 
-      if (g1 === "mismatch" && g2 === "mismatch" && g3 === "mismatch") {
+      if (finalSeverity < baselineSeverity && reversals === 0) {
         return {
-          pattern: "Persistent mismatch pattern",
-          prediction: "Intermediate predicted risk",
+          pattern: "Improving trajectory",
+          prediction: "Lower-to-intermediate framework-based risk",
           interpretation:
-            "Persistent macro–micro dissociation indicates sustained loss of hemodynamic coherence."
+            "The serial profile shifted overall toward lower macro–micro severity, suggesting improved circulatory coherence over time.",
+          summary:
+            `Baseline: ${baselineState} (${severityName(baselineSeverity)}). Final: ${finalState} (${severityName(finalSeverity)}). No reversal detected.`,
+          logic:
+            "Improving trajectory was assigned because final severity was lower than baseline severity without bidirectional reversal."
+        };
+      }
+
+      if (finalSeverity > baselineSeverity && reversals === 0) {
+        return {
+          pattern: "Worsening trajectory",
+          prediction: "Intermediate-to-higher framework-based risk",
+          interpretation:
+            "The serial profile shifted overall toward higher macro–micro severity, consistent with progressive hemodynamic deterioration.",
+          summary:
+            `Baseline: ${baselineState} (${severityName(baselineSeverity)}). Final: ${finalState} (${severityName(finalSeverity)}). No reversal detected.`,
+          logic:
+            "Worsening trajectory was assigned because final severity was higher than baseline severity without bidirectional reversal."
+        };
+      }
+
+      if (baselineSeverity === finalSeverity && reversals >= 1) {
+        return {
+          pattern: "Fluctuating trajectory",
+          prediction: "Intermediate framework-based risk",
+          interpretation:
+            "The trajectory returned to a similar severity level but displayed directional instability along the way, supporting a fluctuating pattern.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Same overall severity but with directional reversal.`,
+          logic:
+            "Fluctuating trajectory was assigned because the sequence oscillated despite similar baseline and final severity."
+        };
+      }
+
+      if (baselineState === "Concordant high-flow" && finalState === "Concordant high-flow" && hasAnyLow(states)) {
+        return {
+          pattern: "Fluctuating trajectory",
+          prediction: "Intermediate framework-based risk",
+          interpretation:
+            "Although the profile began and ended in concordant high-flow, interim deterioration to concordant low-flow indicates an unstable fluctuating course.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Interim concordant low-flow present.`,
+          logic:
+            "Fluctuating trajectory was assigned because apparent recovery occurred only after interim deterioration."
+        };
+      }
+
+      if (baselineSeverity === finalSeverity && reversals === 0) {
+        if (baselineSeverity === 1) {
+          return {
+            pattern: "Fluctuating trajectory",
+            prediction: "Intermediate framework-based risk",
+            interpretation:
+              "The serial profile remained within mismatch-range severity without achieving sustained high-flow improvement or low-flow deterioration.",
+            summary:
+              `Baseline: ${baselineState}. Final: ${finalState}. Predominantly mismatch-level severity.`,
+            logic:
+              "Fluctuating trajectory was assigned because the profile did not meet favorable, improving, or worsening criteria."
+          };
+        }
+
+        if (baselineSeverity === 2) {
+          return {
+            pattern: "Worsening trajectory",
+            prediction: "Higher framework-based risk",
+            interpretation:
+              "Persistent severe low-flow physiology suggests sustained macro–micro dysfunction.",
+            summary:
+              `Baseline: ${baselineState}. Final: ${finalState}. Persistent unfavorable severity.`,
+            logic:
+              "Worsening trajectory was assigned because concordant low-flow remained dominant."
+          };
+        }
+
+        return {
+          pattern: "Favorable trajectory",
+          prediction: "Lower framework-based risk",
+          interpretation:
+            "The profile remained at a favorable severity level throughout follow-up.",
+          summary:
+            `Baseline: ${baselineState}. Final: ${finalState}. Stable favorable severity pattern.`,
+          logic:
+            "Favorable trajectory was assigned because the profile remained persistently favorable."
         };
       }
 
       return {
-        pattern: "Fluctuating pattern",
-        prediction: "Intermediate predicted risk",
+        pattern: "Fluctuating trajectory",
+        prediction: "Intermediate framework-based risk",
         interpretation:
-          "Dynamic transitions across states suggest unstable macro–micro circulatory regulation."
+          "The serial pattern did not meet predefined criteria for favorable, improving, or worsening trajectories and was therefore classified as fluctuating.",
+        summary:
+          `Baseline: ${baselineState}. Final: ${finalState}. Mixed serial transitions without sustained direction.`,
+        logic:
+          "Fluctuating trajectory was assigned by default because no stable directional rule was satisfied."
       };
     }
 
+    function getValidPointsFromDOM() {
+      const rows = getAllRowsDataFromDOM();
+
+      return rows
+        .map((row, index) => {
+          const time = String(row.time || "").trim() || `Time ${index + 1}`;
+          const vti = parseFloat(row.vti);
+          const pi = parseFloat(row.pi);
+
+          if (Number.isNaN(vti) || Number.isNaN(pi)) {
+            return null;
+          }
+
+          return {
+            time,
+            vti,
+            pi,
+            state: getState(vti, pi)
+          };
+        })
+        .filter(Boolean);
+    }
+
+    function formatDailyStates(points) {
+      return points.map(point => {
+        return `<strong>${escapeHtml(point.time)}:</strong> ${escapeHtml(point.state)} <span style="color:#64748b;">(${point.vti.toFixed(1)}, ${point.pi.toFixed(1)})</span>`;
+      }).join("<br>");
+    }
+
     function analyzePattern() {
-      const vti1 = parseFloat(document.getElementById("vti1").value);
-      const pi1 = parseFloat(document.getElementById("pi1").value);
-      const vti2 = parseFloat(document.getElementById("vti2").value);
-      const pi2 = parseFloat(document.getElementById("pi2").value);
-      const vti3 = parseFloat(document.getElementById("vti3").value);
-      const pi3 = parseFloat(document.getElementById("pi3").value);
+      const points = getValidPointsFromDOM();
 
-      const values = [vti1, pi1, vti2, pi2, vti3, pi3];
-      const hasInvalid = values.some(v => Number.isNaN(v));
-
-      if (hasInvalid) {
-        document.getElementById("dailyStates").textContent = "Please enter all six values.";
-        document.getElementById("trajectory").textContent = "Incomplete input";
-        document.getElementById("prediction").textContent = "Incomplete input";
+      if (points.length < 2) {
+        document.getElementById("dailyStates").textContent =
+          "Please enter at least two complete VTI–PI pairs.";
+        document.getElementById("trajectory").textContent = "Insufficient serial data";
+        document.getElementById("prediction").textContent = "Insufficient serial data";
         document.getElementById("interpretation").textContent =
-          "All Day 1–3 VTI and PI fields are required.";
+          "Trajectory interpretation requires at least two time points with both VTI and PI.";
+        document.getElementById("decisionSummary").textContent =
+          "At least two classifiable serial assessments are required.";
         document.getElementById("detailNote").textContent =
-          "Tip: use numeric values only, for example VTI 15.8 and PI 1.4.";
-        drawQuadrantPlot([]);
+          "Tip: each analyzed time point must include both VTI and PI. Incomplete rows are ignored.";
+        drawQuadrantPlot(points);
         return;
       }
 
-      const points = [
-        { day: "Day 1", vti: vti1, pi: pi1, state: getState(vti1, pi1) },
-        { day: "Day 2", vti: vti2, pi: pi2, state: getState(vti2, pi2) },
-        { day: "Day 3", vti: vti3, pi: pi3, state: getState(vti3, pi3) }
-      ];
+      const result = analyzeTrajectory(points);
 
-      const result = analyzeTrajectory(points.map(p => p.state));
-
-      document.getElementById("dailyStates").innerHTML =
-        `<strong>Day 1:</strong> ${points[0].state}<br>` +
-        `<strong>Day 2:</strong> ${points[1].state}<br>` +
-        `<strong>Day 3:</strong> ${points[2].state}`;
-
+      document.getElementById("dailyStates").innerHTML = formatDailyStates(points);
       document.getElementById("trajectory").textContent = result.pattern;
       document.getElementById("prediction").textContent = result.prediction;
       document.getElementById("interpretation").textContent = result.interpretation;
+      document.getElementById("decisionSummary").textContent = `${result.summary} ${result.logic}`;
 
       document.getElementById("detailNote").textContent =
         `Cutoffs used: VTI ${VTI_CUTOFF} cm and PI ${PI_CUTOFF}. ` +
-        `The quadrant plot visualizes day-by-day movement across macro–micro circulatory states. Predicted risk categories are framework-based and intended for research demonstration only.`;
+        `Trajectory phenotypes are assigned using rule-based logic incorporating baseline state, final state, severity direction, and bidirectional reversals. ` +
+        `Framework-based risk labels are for research demonstration only.`;
 
       drawQuadrantPlot(points);
     }
 
     function fillExample() {
-      document.getElementById("vti1").value = 15.2;
-      document.getElementById("pi1").value = 1.4;
-      document.getElementById("vti2").value = 16.1;
-      document.getElementById("pi2").value = 1.1;
-      document.getElementById("vti3").value = 17.4;
-      document.getElementById("pi3").value = 1.3;
+      const rows = [
+        createRow({ time: "Day 1", vti: "15.2", pi: "1.4" }),
+        createRow({ time: "Day 2", vti: "16.1", pi: "1.1" }),
+        createRow({ time: "Day 3", vti: "17.4", pi: "1.3" })
+      ];
+      renderRows(rows);
+      analyzePattern();
+    }
+
+    function loadFluctuatingExample() {
+      const rows = [
+        createRow({ time: "Day 1", vti: "15.2", pi: "1.4" }),
+        createRow({ time: "Day 2", vti: "15.0", pi: "1.0" }),
+        createRow({ time: "Day 3", vti: "17.8", pi: "1.5" })
+      ];
+      renderRows(rows);
       analyzePattern();
     }
 
     function resetForm() {
-      ["vti1", "pi1", "vti2", "pi2", "vti3", "pi3"].forEach(id => {
-        document.getElementById(id).value = "";
-      });
+      initializeRows();
 
       document.getElementById("dailyStates").textContent = "No analysis yet.";
       document.getElementById("trajectory").textContent = "Awaiting input";
       document.getElementById("prediction").textContent = "Awaiting input";
       document.getElementById("interpretation").textContent =
-        "Enter data and click “Analyze Pattern”.";
+        "Enter serial VTI and PI values and click “Analyze Pattern”.";
+      document.getElementById("decisionSummary").textContent =
+        "The tool will summarize baseline state, final state, directionality, and reversals.";
       document.getElementById("detailNote").textContent =
-        "This demo summarizes the first 3 ICU days using predefined VTI and PI cutoffs derived from the study framework.";
+        "This demo uses rule-based trajectory interpretation based on serial VTI and PI measurements.";
 
       drawQuadrantPlot([]);
     }
@@ -775,9 +1212,6 @@
           PI
         </text>
 
-        <text x="${cutX + 8}" y="${height - margin.bottom - 10}" font-size="13" fill="#1f4e79">VTI = ${VTI_CUTOFF}</text>
-        <text x="${width - margin.right - 74}" y="${cutY - 8}" font-size="13" fill="#1f4e79">PI = ${PI_CUTOFF}</text>
-
         ${drawTicks(xMin, xMax, yMin, yMax, xScale, yScale, margin, width, height)}
       `;
 
@@ -798,14 +1232,14 @@
           `;
         }
 
-        points.forEach((p) => {
+        points.forEach((p, index) => {
           const cx = xScale(p.vti);
           const cy = yScale(p.pi);
           const color = getColor(p.state);
           content += `
             <circle cx="${cx}" cy="${cy}" r="8" fill="${color}" stroke="#ffffff" stroke-width="2.5"></circle>
             <text x="${cx + 12}" y="${cy - 10}" font-size="13" fill="${color}" font-weight="700">
-              ${p.day}
+              ${escapeHtml(p.time)}
             </text>
             <text x="${cx + 12}" y="${cy + 8}" font-size="12" fill="#475569">
               (${p.vti.toFixed(1)}, ${p.pi.toFixed(1)})
@@ -815,7 +1249,7 @@
       } else {
         content += `
           <text x="${margin.left + plotW / 2}" y="${margin.top + plotH / 2}" text-anchor="middle" font-size="16" fill="#94a3b8">
-            Enter Day 1–3 VTI and PI values to display the trajectory
+            Enter serial VTI and PI values to display the trajectory
           </text>
         `;
       }
@@ -861,7 +1295,7 @@
       return ticks;
     }
 
-    drawQuadrantPlot([]);
+    initializeRows();
   </script>
 </body>
 </html>
