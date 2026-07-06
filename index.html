@@ -11,7 +11,7 @@
       --muted: #6b7280;
       --border: #e5e7eb;
       --blue: #1f4f99;
-      --bg: #fafafa;
+      --bg: #f8fafc;
       --card: #ffffff;
     }
 
@@ -26,29 +26,32 @@
     }
 
     .container {
-      max-width: 920px;
+      max-width: 980px;
       margin: auto;
-      padding: 60px 25px;
+      padding: 56px 24px 70px;
     }
 
     header {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 36px;
-      margin-bottom: 28px;
+      border-radius: 20px;
+      padding: 38px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
     }
 
     h1 {
       margin: 0;
       font-size: 46px;
       line-height: 1.15;
+      color: #111827;
     }
 
     .subtitle {
       margin-top: 10px;
       font-size: 21px;
       color: var(--blue);
+      font-weight: 500;
     }
 
     .bio {
@@ -57,37 +60,73 @@
       color: #374151;
     }
 
+    .links {
+      margin-top: 22px;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 6px 14px 6px 0;
+      font-weight: 600;
+      color: var(--blue);
+    }
+
     section {
-      padding: 32px 0;
-      border-top: 1px solid var(--border);
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 32px;
+      margin-bottom: 22px;
     }
 
     h2 {
       margin: 0 0 14px;
-      font-size: 26px;
+      font-size: 25px;
       color: var(--blue);
+    }
+
+    h3 {
+      margin: 18px 0 8px;
+      font-size: 18px;
+      color: #111827;
+    }
+
+    p {
+      margin-top: 0;
     }
 
     ul {
       padding-left: 22px;
       margin-top: 0;
+      margin-bottom: 0;
     }
 
-    li { margin: 10px 0; }
+    li {
+      margin: 9px 0;
+    }
 
     a {
       color: var(--blue);
       text-decoration: none;
     }
 
-    a:hover { text-decoration: underline; }
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+    }
 
     .pub {
       margin-bottom: 20px;
     }
 
     .pub-title {
-      font-weight: 600;
+      font-weight: 650;
+      color: #111827;
     }
 
     .small {
@@ -95,22 +134,49 @@
       font-size: 15px;
     }
 
-    .links a {
-      margin-right: 16px;
+    .tag {
+      display: inline-block;
+      background: #eef4ff;
+      color: var(--blue);
+      border: 1px solid #d8e6ff;
+      border-radius: 999px;
+      padding: 5px 10px;
+      margin: 4px 6px 4px 0;
+      font-size: 14px;
       font-weight: 600;
     }
 
     .footer {
-      margin-top: 50px;
+      margin-top: 46px;
       text-align: center;
       font-size: 14px;
       color: #888;
     }
 
-    @media (max-width: 640px) {
-      h1 { font-size: 36px; }
-      header { padding: 26px; }
-      .subtitle { font-size: 18px; }
+    @media (max-width: 760px) {
+      .container {
+        padding: 32px 16px 52px;
+      }
+
+      header {
+        padding: 28px 24px;
+      }
+
+      section {
+        padding: 24px 22px;
+      }
+
+      h1 {
+        font-size: 36px;
+      }
+
+      .subtitle {
+        font-size: 18px;
+      }
+
+      .grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -119,36 +185,39 @@
   <main class="container">
 
     <header>
-      <h1>Jie Wang, MD, PhD Candidate</h1>
+      <h1>Jie Wang, MD</h1>
 
       <div class="subtitle">
         Critical Care Medicine • Echocardiography • Artificial Intelligence
       </div>
 
       <p class="bio">
-        I am a physician-scientist in critical care medicine with research interests in
-        echocardiographic phenotyping, circulatory physiology, artificial intelligence in
-        cardiovascular imaging, and sepsis-induced organ dysfunction. My work aims to bridge
-        bedside physiology with computational methods to improve risk stratification and
-        precision medicine in critically ill patients.
+        I am a physician-scientist in critical care medicine. My research focuses on
+        echocardiographic phenotyping, hemodynamic monitoring, macro–micro circulatory
+        coherence, artificial intelligence in cardiovascular imaging, and sepsis-induced
+        organ dysfunction. My goal is to bridge bedside physiology with computational
+        methods to improve risk stratification and precision medicine in critically ill patients.
       </p>
 
-      <p class="links">
+      <div class="links">
         <a href="mailto:jieicu@gmail.com">Email</a>
         <a href="https://www.researchgate.net/profile/Jie-Wang-496" target="_blank" rel="noopener noreferrer">ResearchGate</a>
         <a href="#">Google Scholar</a>
         <a href="#">ORCID</a>
-      </p>
+        <a href="#">CV</a>
+      </div>
     </header>
 
     <section>
       <h2>Current Position</h2>
       <p>
-        Attending Physician, Department of Critical Care Medicine<br>
+        <strong>Attending Physician</strong><br>
+        Department of Critical Care Medicine<br>
         Peking Union Medical College Hospital
       </p>
+
       <p>
-        PhD Candidate<br>
+        <strong>PhD Candidate</strong><br>
         Peking Union Medical College & Chinese Academy of Medical Sciences
       </p>
     </section>
@@ -156,23 +225,23 @@
     <section>
       <h2>News</h2>
       <ul>
-        <li>2026 — Interactive Macro–Micro Circulatory Trajectory Tool released.</li>
-        <li>2025 — Review article published in <em>Critical Care Medicine</em>.</li>
-        <li>2025 — Hemodynamic homeostasis disequilibrium study published in <em>Frontiers in Physiology</em>.</li>
-        <li>2024 — Peripheral perfusion index study published in <em>Scientific Reports</em>.</li>
+        <li><strong>2026</strong> — Developed the Macro–Micro Circulatory State and Trajectory Tool.</li>
+        <li><strong>2025</strong> — Review article published in <em>Critical Care Medicine</em>.</li>
+        <li><strong>2025</strong> — Hemodynamic homeostasis disequilibrium study published in <em>Frontiers in Physiology</em>.</li>
+        <li><strong>2024</strong> — Peripheral perfusion index study published in <em>Scientific Reports</em>.</li>
       </ul>
     </section>
 
     <section>
       <h2>Research Interests</h2>
-      <ul>
-        <li>Artificial intelligence in echocardiography</li>
-        <li>Sepsis-induced cardiac dysfunction</li>
-        <li>Hemodynamic monitoring and circulatory physiology</li>
-        <li>Macro–micro circulatory coherence in critical illness</li>
-        <li>Critical care ultrasound</li>
-        <li>Mitochondrial dysfunction in sepsis</li>
-      </ul>
+      <p>
+        <span class="tag">AI Echocardiography</span>
+        <span class="tag">Septic Cardiomyopathy</span>
+        <span class="tag">Hemodynamics</span>
+        <span class="tag">Microcirculation</span>
+        <span class="tag">Critical Care Ultrasound</span>
+        <span class="tag">Mitochondrial Dysfunction</span>
+      </p>
     </section>
 
     <section>
@@ -182,6 +251,7 @@
         <li>Macro–micro circulatory state transitions in critical illness</li>
         <li>Machine learning for critical care ultrasound interpretation</li>
         <li>Mitochondrial calcium signaling and mPTP opening in sepsis</li>
+        <li>Time-resolved immune–cardiac interactions in experimental sepsis</li>
       </ul>
     </section>
 
@@ -210,19 +280,43 @@
         <em>Scientific Reports.</em> 2024.
       </div>
 
+      <div class="pub">
+        <div class="pub-title">
+          Wang J, et al. Microcirculation in Critical Illness.
+        </div>
+        <em>Journal of Intensive Care Medicine.</em> 2025.
+      </div>
+
       <p class="small">
-        Additional publications and manuscripts are available upon request.
+        Additional publications, manuscripts, and collaborations are available upon request.
       </p>
     </section>
 
-    <section>
-      <h2>Tools</h2>
-      <ul>
-        <li>
-          <a href="macro_micro_demo.html">Macro–Micro Circulatory State and Trajectory Tool</a>
-        </li>
-      </ul>
-    </section>
+    <div class="grid">
+      <section>
+        <h2>Tools</h2>
+        <ul>
+          <li>
+            <a href="macro_micro_demo.html">
+              Macro–Micro Circulatory State and Trajectory Tool
+            </a>
+          </li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>Education</h2>
+        <p>
+          <strong>PhD Candidate</strong><br>
+          Peking Union Medical College<br>
+          2023–Present
+        </p>
+        <p>
+          <strong>MD</strong><br>
+          China
+        </p>
+      </section>
+    </div>
 
     <section>
       <h2>Contact</h2>
@@ -236,8 +330,8 @@
         </a>
       </p>
       <p>
-        Google Scholar: Coming soon<br>
-        ORCID: Coming soon
+        Google Scholar: available soon<br>
+        ORCID: available soon
       </p>
     </section>
 
