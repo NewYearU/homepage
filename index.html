@@ -1,326 +1,250 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jie Wang | Critical Care Medicine</title>
 
-<title>Jie Wang | Critical Care Medicine</title>
+  <style>
+    :root {
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --blue: #1f4f99;
+      --bg: #fafafa;
+      --card: #ffffff;
+    }
 
-<style>
+    * { box-sizing: border-box; }
 
-:root{
---text:#222;
---light:#666;
---border:#e5e7eb;
---blue:#1f4f99;
---bg:#fafafa;
-}
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
 
-*{
-box-sizing:border-box;
-}
+    .container {
+      max-width: 920px;
+      margin: auto;
+      padding: 60px 25px;
+    }
 
-body{
+    header {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 36px;
+      margin-bottom: 28px;
+    }
 
-margin:0;
-font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
-background:var(--bg);
-color:var(--text);
-line-height:1.7;
+    h1 {
+      margin: 0;
+      font-size: 46px;
+      line-height: 1.15;
+    }
 
-}
+    .subtitle {
+      margin-top: 10px;
+      font-size: 21px;
+      color: var(--blue);
+    }
 
-.container{
+    .bio {
+      margin-top: 24px;
+      font-size: 17px;
+      color: #374151;
+    }
 
-max-width:900px;
-margin:auto;
-padding:60px 25px;
+    section {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+    }
 
-}
+    h2 {
+      margin: 0 0 14px;
+      font-size: 26px;
+      color: var(--blue);
+    }
 
-header{
+    ul {
+      padding-left: 22px;
+      margin-top: 0;
+    }
 
-margin-bottom:50px;
+    li { margin: 10px 0; }
 
-}
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
 
-h1{
+    a:hover { text-decoration: underline; }
 
-margin:0;
-font-size:48px;
+    .pub {
+      margin-bottom: 20px;
+    }
 
-}
+    .pub-title {
+      font-weight: 600;
+    }
 
-.subtitle{
+    .small {
+      color: var(--muted);
+      font-size: 15px;
+    }
 
-margin-top:8px;
-font-size:22px;
-color:var(--blue);
+    .links a {
+      margin-right: 16px;
+      font-weight: 600;
+    }
 
-}
+    .footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 14px;
+      color: #888;
+    }
 
-.bio{
-
-margin-top:25px;
-font-size:18px;
-color:#444;
-
-}
-
-section{
-
-padding:35px 0;
-border-top:1px solid var(--border);
-
-}
-
-h2{
-
-margin-top:0;
-font-size:28px;
-color:var(--blue);
-
-}
-
-ul{
-
-padding-left:22px;
-
-}
-
-li{
-
-margin:12px 0;
-
-}
-
-a{
-
-text-decoration:none;
-color:var(--blue);
-
-}
-
-a:hover{
-
-text-decoration:underline;
-
-}
-
-.pub{
-
-margin-bottom:20px;
-
-}
-
-.footer{
-
-margin-top:60px;
-text-align:center;
-font-size:15px;
-color:#888;
-
-}
-
-</style>
-
+    @media (max-width: 640px) {
+      h1 { font-size: 36px; }
+      header { padding: 26px; }
+      .subtitle { font-size: 18px; }
+    }
+  </style>
 </head>
 
 <body>
-
-<div class="container">
-
-<header>
-
-<h1>Jie Wang, MD, PhD</h1>
-
-<div class="subtitle">
-
-Critical Care Medicine • Echocardiography • Artificial Intelligence
-
-</div>
-
-<p class="bio">
-
-I am a physician-scientist specializing in critical care medicine. My research focuses on echocardiographic phenotyping, circulatory physiology, artificial intelligence in cardiovascular imaging, and sepsis-induced organ dysfunction. My goal is to bridge bedside physiology with computational methods to improve precision medicine in critically ill patients.
-
-</p>
-
-</header>
-
-<section>
-
-<h2>Current Position</h2>
-
-<p>
-
-Attending Physician, Department of Critical Care Medicine
-
-<br>
-
-PhD Candidate, Peking Union Medical College Hospital (PUMCH)
-
-</p>
-
-</section>
-
-<section>
-
-<h2>Research Interests</h2>
-
-<ul>
-
-<li>Artificial Intelligence in Echocardiography</li>
-
-<li>Sepsis-Induced Cardiac Dysfunction</li>
-
-<li>Hemodynamic Monitoring</li>
-
-<li>Macro–Micro Circulatory Coherence</li>
-
-<li>Critical Care Ultrasound</li>
-
-<li>Precision Medicine in Critical Illness</li>
-
-</ul>
-
-</section>
-
-<section>
-
-<h2>Selected Publications</h2>
-
-<div class="pub">
-
-<b>Wang J</b>, et al.
-
-Time Course of Morbidity and Mortality Across Echocardiographic Phenotypes in Patients With Sepsis: A Systematic Review and Meta-analysis.
-
-<i>Critical Care Medicine.</i>
-
-2025;53(11):e2294–e2304.
-
-</div>
-
-<div class="pub">
-
-<b>Wang J</b>, et al.
-
-Hemodynamic Homeostasis Disequilibrium in Critical Illness.
-
-<i>Frontiers in Physiology.</i>
-
-2025.
-
-</div>
-
-<div class="pub">
-
-<b>Wang J</b>, et al.
-
-Microcirculation in Critical Illness.
-
-<i>Journal of Intensive Care Medicine.</i>
-
-2025.
-
-</div>
-
-<div class="pub">
-
-<b>Wang J</b>, et al.
-
-Prediction of Mortality Using Peripheral Perfusion Index.
-
-<i>Scientific Reports.</i>
-
-2024.
-
-</div>
-
-</section>
-
-<section>
-
-<h2>Current Projects</h2>
-
-<ul>
-
-<li>AI-based echocardiographic phenotyping of septic cardiomyopathy</li>
-
-<li>Macro–micro circulatory state transitions in critical illness</li>
-
-<li>Machine learning for ICU ultrasound interpretation</li>
-
-<li>Experimental studies on mitochondrial dysfunction in sepsis</li>
-
-</ul>
-
-</section>
-
-<section>
-
-<h2>Contact</h2>
-
-<p>
-
-Email:
-
-<a href="mailto:jieicu@gmail.com">
-
-jieicu@gmail.com
-
-</a>
-
-</p>
-
-<p>
-
-ResearchGate:
-
-<a href="https://www.researchgate.net/profile/Jie-Wang-496">
-
-https://www.researchgate.net/profile/Jie-Wang-496
-
-</a>
-
-</p>
-
-<p>
-
-Google Scholar:
-
-<a href="#">
-
-Coming Soon
-
-</a>
-
-</p>
-
-<p>
-
-ORCID:
-
-<a href="#">
-
-Coming Soon
-
-</a>
-
-</p>
-
-</section>
-
-<div class="footer">
-
-© 2026 Jie Wang
-
-</div>
-
-</div>
-
+  <main class="container">
+
+    <header>
+      <h1>Jie Wang, MD, PhD Candidate</h1>
+
+      <div class="subtitle">
+        Critical Care Medicine • Echocardiography • Artificial Intelligence
+      </div>
+
+      <p class="bio">
+        I am a physician-scientist in critical care medicine with research interests in
+        echocardiographic phenotyping, circulatory physiology, artificial intelligence in
+        cardiovascular imaging, and sepsis-induced organ dysfunction. My work aims to bridge
+        bedside physiology with computational methods to improve risk stratification and
+        precision medicine in critically ill patients.
+      </p>
+
+      <p class="links">
+        <a href="mailto:jieicu@gmail.com">Email</a>
+        <a href="https://www.researchgate.net/profile/Jie-Wang-496" target="_blank" rel="noopener noreferrer">ResearchGate</a>
+        <a href="#">Google Scholar</a>
+        <a href="#">ORCID</a>
+      </p>
+    </header>
+
+    <section>
+      <h2>Current Position</h2>
+      <p>
+        Attending Physician, Department of Critical Care Medicine<br>
+        Peking Union Medical College Hospital
+      </p>
+      <p>
+        PhD Candidate<br>
+        Peking Union Medical College & Chinese Academy of Medical Sciences
+      </p>
+    </section>
+
+    <section>
+      <h2>News</h2>
+      <ul>
+        <li>2026 — Interactive Macro–Micro Circulatory Trajectory Tool released.</li>
+        <li>2025 — Review article published in <em>Critical Care Medicine</em>.</li>
+        <li>2025 — Hemodynamic homeostasis disequilibrium study published in <em>Frontiers in Physiology</em>.</li>
+        <li>2024 — Peripheral perfusion index study published in <em>Scientific Reports</em>.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Research Interests</h2>
+      <ul>
+        <li>Artificial intelligence in echocardiography</li>
+        <li>Sepsis-induced cardiac dysfunction</li>
+        <li>Hemodynamic monitoring and circulatory physiology</li>
+        <li>Macro–micro circulatory coherence in critical illness</li>
+        <li>Critical care ultrasound</li>
+        <li>Mitochondrial dysfunction in sepsis</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Current Projects</h2>
+      <ul>
+        <li>AI-assisted echocardiographic phenotyping of septic cardiomyopathy</li>
+        <li>Macro–micro circulatory state transitions in critical illness</li>
+        <li>Machine learning for critical care ultrasound interpretation</li>
+        <li>Mitochondrial calcium signaling and mPTP opening in sepsis</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Selected Publications</h2>
+
+      <div class="pub">
+        <div class="pub-title">
+          Wang J, et al. Time Course of Morbidity and Mortality Across Echocardiographic
+          Phenotypes in Patients With Sepsis: A Systematic Review and Meta-Analysis.
+        </div>
+        <em>Critical Care Medicine.</em> 2025;53(11):e2294–e2304.
+      </div>
+
+      <div class="pub">
+        <div class="pub-title">
+          Wang J, et al. Hemodynamic Homeostasis Disequilibrium in Critical Illness.
+        </div>
+        <em>Frontiers in Physiology.</em> 2025.
+      </div>
+
+      <div class="pub">
+        <div class="pub-title">
+          Wang J, et al. Prediction of Mortality Using Peripheral Perfusion Index.
+        </div>
+        <em>Scientific Reports.</em> 2024.
+      </div>
+
+      <p class="small">
+        Additional publications and manuscripts are available upon request.
+      </p>
+    </section>
+
+    <section>
+      <h2>Tools</h2>
+      <ul>
+        <li>
+          <a href="macro_micro_demo.html">Macro–Micro Circulatory State and Trajectory Tool</a>
+        </li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Contact</h2>
+      <p>
+        Email: <a href="mailto:jieicu@gmail.com">jieicu@gmail.com</a>
+      </p>
+      <p>
+        ResearchGate:
+        <a href="https://www.researchgate.net/profile/Jie-Wang-496" target="_blank" rel="noopener noreferrer">
+          Jie Wang Profile
+        </a>
+      </p>
+      <p>
+        Google Scholar: Coming soon<br>
+        ORCID: Coming soon
+      </p>
+    </section>
+
+    <div class="footer">
+      © 2026 Jie Wang · Last updated: July 2026
+    </div>
+
+  </main>
 </body>
-
 </html>
